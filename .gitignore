@@ -1,0 +1,14 @@
+# Binarios y objetos de compilación
+*.o
+*.exe
+src/simulador
+build/
+
+# Archivos temporales de Office / editores
+~$*
+*.tmp
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
