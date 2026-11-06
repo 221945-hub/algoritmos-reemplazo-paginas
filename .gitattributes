@@ -1,0 +1,9 @@
+# Forzar fin de línea LF (Linux) en todo archivo de texto.
+# Evita errores de make/gcc en WSL por CRLF de Windows.
+* text=auto eol=lf
+
+*.pdf  binary
+*.png  binary
+*.docx binary
+*.xlsx binary
+*.zip  binary

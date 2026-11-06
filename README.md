@@ -11,7 +11,7 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 | Paso | Descripción | Estado | Documento |
 |---|---|---|---|
 | 1 | Fijar los parámetros del experimento | ✅ | [docs/PASO_01_parametros.md](docs/PASO_01_parametros.md) |
-| 2 | Preparar el entorno Linux (WSL, gcc, make) | ⏳ | — |
+| 2 | Preparar el entorno Linux (WSL, gcc, make) | ✅ | [docs/PASO_02_entorno.md](docs/PASO_02_entorno.md) |
 | 3 | Estructura modular del código en C | ⏳ | — |
 | 4 | Implementar los 12 algoritmos | ⏳ | — |
 | 5 | Validar resultados | ⏳ | — |
@@ -23,7 +23,15 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 
 ```
 ├── docs/        Documentación de cada paso
-└── src/         Código fuente en C
+└── src/         Código fuente en C (+ Makefile)
+```
+
+## Compilar (Linux / WSL)
+
+```bash
+cd src
+make test     # prueba de entorno y parámetros
+make clean
 ```
 
 ## Integrantes
