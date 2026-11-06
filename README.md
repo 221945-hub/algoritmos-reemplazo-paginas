@@ -23,11 +23,7 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 
 ```
 ├── docs/        Documentación de cada paso
-├── src/         Código fuente en C
-├── Tema3.pdf    Material del curso (memoria virtual)
-├── caratula.docx
-├── gemini-code-1793912023970.md               Prompt / enunciado del informe
-└── Proyecto_Algoritmos_Reemplazo_Paginas_Unificado.zip   Boceto anterior (solo referencia)
+└── src/         Código fuente en C
 ```
 
 ## Integrantes

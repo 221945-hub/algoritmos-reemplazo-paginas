@@ -12,3 +12,9 @@ build/
 
 # Claude Code
 .claude/
+
+# Material de análisis (solo local, no se sube)
+Tema3.pdf
+caratula.docx
+gemini-code-*.md
+Proyecto_Algoritmos_Reemplazo_Paginas_Unificado.zip
