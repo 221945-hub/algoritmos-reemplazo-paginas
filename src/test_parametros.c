@@ -56,8 +56,8 @@ int main(void)
     verificar(distintas == 7, "7 paginas distintas {0,1,2,3,4,5,7}");
     verificar(frecuencia[0] == 8, "pagina 0 referenciada 8 veces");
     verificar(escrituras == 12, "12 escrituras (40%)");
-    verificar(SFIFO_PRIMARIA + SFIFO_SECUNDARIA == NUM_MARCOS,
-              "FIFO segmentado: primaria + secundaria = 3 marcos");
+    verificar(PERIODO_RELOJ > 0 && WS_TAU > 0 && WSCLOCK_TAU > 0,
+              "periodo de reloj y ventanas tau definidos");
 
     printf("\nResultado: %s (%d fallas)\n", fallas ? "ERROR" : "ENTORNO LISTO", fallas);
     return fallas ? 1 : 0;

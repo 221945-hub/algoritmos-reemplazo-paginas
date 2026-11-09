@@ -15,11 +15,11 @@
 
 /* ---- Parámetros específicos de algoritmos ---- */
 #define AGING_BITS      8    /* ancho del registro de envejecimiento    */
-#define WSCLOCK_TAU     4    /* ventana del conjunto de trabajo (tics)  */
+#define PERIODO_RELOJ   5    /* cada 5 tics se limpian los bits R
+                                (NRU y Working Set)                     */
+#define WS_TAU          4    /* ventana del conjunto de trabajo (tics)  */
+#define WSCLOCK_TAU     4    /* ventana de WSClock (tics)               */
 #define RANDOM_SEMILLA  42u  /* semilla del generador LCG propio        */
-#define SFIFO_PRIMARIA  2    /* marcos de la lista primaria (FIFO)      */
-#define SFIFO_SECUNDARIA 1   /* marcos de la lista secundaria (LRU)     */
-#define PB_BUFFER       2    /* capacidad total listas libre+modificada */
 
 /* Cadena oficial de 30 referencias (idéntica para los 12 algoritmos) */
 extern const int REFS[NUM_REFS];

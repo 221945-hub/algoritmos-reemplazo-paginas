@@ -42,7 +42,7 @@ Ref : 7  0  1  2  0  3  0  4  2  3  0  3  2  1  2  0  1  7  0  1  3  5  2  0  1 
 
 ## 1.3 Patrón de lectura/escritura (bit M)
 
-Reloj Mejorado, Page Buffering y WSClock necesitan saber si una página quedó **modificada (sucia)**. En lugar de inventar escrituras con `i % 2`, se fija un patrón explícito:
+NRU, Reloj Mejorado y WSClock necesitan saber si una página quedó **modificada (sucia)**. En lugar de inventar escrituras con `i % 2`, se fija un patrón explícito:
 
 ```
 Paso: 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
@@ -65,31 +65,33 @@ Tipo: R  W  R  R  W  R  R  W  W  R  W  R  R  R  W  R  R  R  W  R  W  R  W  W  R 
 
 ## 1.5 Parámetros específicos por algoritmo
 
+> 🔄 **Revisión (2026-11-09):** el conjunto de algoritmos se alinea con el boceto `Proyecto_Algoritmos_Reemplazo_Paginas_Unificado`. **NRU** y **Working Set** reemplazan a *FIFO Segmentado* y *Page Buffering*. Las demás reglas del enunciado (3 marcos, cadena de 30 referencias, trazas con variables auxiliares, código C funcional) se mantienen.
+
 | # | Algoritmo | Parámetros y decisiones fijadas |
 |---|---|---|
 | 1 | **FIFO** | Cola de llegada. Se expulsa la página que lleva más tiempo cargada. Un acierto no altera la cola. |
 | 2 | **Óptimo (OPT)** | Se expulsa la página cuyo próximo uso está más lejos. Si varias no se vuelven a usar, se expulsa la de menor índice de marco. |
 | 3 | **LRU** | Marca de tiempo del último uso por marco. Se expulsa la de marca menor. |
-| 4 | **LFU** | Contador de usos por página. **Se reinicia a 1 al cargar** (no hay historial fuera de memoria). Empate: se expulsa la más antigua por llegada (FIFO). |
-| 5 | **MFU** | Mismo contador que LFU. Se expulsa la de **mayor** contador. Empate: FIFO. |
-| 6 | **Segunda Oportunidad (Reloj)** | Bit R por marco y puntero circular que empieza en M1. Al cargar o en un acierto: R = 1. Si R = 1, se pone R = 0 y el puntero avanza. Si R = 0, la página es la víctima. Después del reemplazo el puntero avanza una posición. |
-| 7 | **Reloj Mejorado (NRU con R, M)** | Clases (R,M): (0,0) < (0,1) < (1,0) < (1,1). Se sigue el algoritmo de segunda oportunidad mejorado de Silberschatz. **Pasada 1:** se busca (0,0) sin modificar bits. **Pasada 2:** se busca (0,1) y se pone R = 0 en cada marco recorrido. Se repite hasta encontrar víctima. M se toma de `ESCRITURA[]`. |
-| 8 | **Aleatorio** | Generador **LCG propio** `x = (1103515245·x + 12345) mod 2³¹`, semilla **42**, víctima = `x mod 3`. Se usa un generador propio para que el resultado sea reproducible en cualquier compilador. |
+| 4 | **Reloj (Segunda Oportunidad)** | Bit R por marco y puntero circular que empieza en M1. Al cargar o en un acierto: R = 1. Si R = 1, se pone R = 0 y el puntero avanza. Si R = 0, la página es la víctima. Después del reemplazo el puntero avanza una posición. |
+| 5 | **NRU (Not Recently Used)** | Bits R y M. **Interrupción de reloj cada `PERIODO_RELOJ` = 5 tics**: al **inicio** de los pasos 6, 11, 16, 21 y 26 se ponen en 0 todos los bits R (M no se toca). Clase = 2·R + M: 0 = (0,0), 1 = (0,1), 2 = (1,0), 3 = (1,1). Se expulsa una página de la **clase más baja**. Empate: la más antigua por llegada (FIFO). Al cargar: R = 1 y M = `ESCRITURA[i]`. En un acierto: R = 1 y `M |= W`. Se diferencia del Reloj Mejorado en que **revisa toda la tabla** y no usa puntero. |
+| 6 | **LFU** | Contador de usos por página. **Se reinicia a 1 al cargar** (no hay historial fuera de memoria). Empate: se expulsa la más antigua por llegada (FIFO). |
+| 7 | **MFU** | Mismo contador que LFU. Se expulsa la de **mayor** contador. Empate: FIFO. |
+| 8 | **Reloj Mejorado (Enhanced Second Chance)** | Clases (R,M): (0,0) < (0,1) < (1,0) < (1,1). Se sigue el algoritmo de segunda oportunidad mejorado de Silberschatz. **Pasada 1:** se busca (0,0) con el puntero, sin modificar bits. **Pasada 2:** se busca (0,1) y se pone R = 0 en cada marco recorrido. Se repite hasta encontrar víctima. M se toma de `ESCRITURA[]`. |
 | 9 | **Envejecimiento (Aging)** | Registro de **8 bits** por marco. En un acierto o carga: R = 1 (la página nueva entra con registro 0). **Al final de cada tic:** `reg = (reg >> 1) | (R << 7)`, luego R = 0. Víctima: el registro menor. Empate: menor índice. |
-| 10 | **FIFO Segmentado** | **Lista primaria FIFO de 2 marcos** y **lista secundaria LRU de 1 marco**, 3 en total. La página que sale de la primaria pasa a la secundaria. Si se referencia una página que está en la secundaria, es **acierto** (no hay E/S) y vuelve a la primaria, intercambiándose con la más antigua de esta. La víctima real sale de la secundaria. |
-| 11 | **Amortiguamiento de Páginas (Page Buffering)** | 3 marcos activos con víctima FIFO, más un búfer de **2 entradas**: una **lista libre** para páginas limpias y una **lista modificada** para páginas sucias. La página expulsada va a la lista que le corresponde según su bit M. Si se vuelve a referenciar mientras está en el búfer, es un **fallo menor**: se rescata sin E/S. Si no está en ninguna parte, es un **fallo mayor**. Cuando el búfer se llena, sale la entrada más antigua; si estaba modificada, se cuenta 1 escritura a disco. **En la comparativa se usan los fallos totales (mayores + menores)** y aparte se reportan los mayores y las escrituras. |
-| 12 | **WSClock** | **τ = 4 tics**. Cada marco guarda R, M y el tiempo del último uso. En un acierto: R = 1, se actualiza el tiempo y `M |= W`. El puntero recorre los marcos: si R = 1, se pone R = 0, se actualiza el tiempo y avanza. Si R = 0 y edad > τ con M = 0, la página es la víctima. Si R = 0 y edad > τ con M = 1, se **programa la escritura** (M = 0, cuenta 1 escritura) y avanza. Si da una vuelta completa sin víctima, se elige el primer marco con R = 0 y M = 0. Si no existe, se elige el marco bajo el puntero. |
+| 10 | **Working Set (Conjunto de Trabajo)** | Versión de Tanenbaum (sección 3.4.8), con **τ = `WS_TAU` = 4 tics** y los bits R limpiados cada `PERIODO_RELOJ` = 5 tics, igual que NRU. Cada marco guarda R y el **tiempo virtual del último uso (TUU)**, que solo se actualiza al cargar o durante el barrido. Un acierto **solo pone R = 1**. En un fallo con memoria llena se recorre la tabla de M1 a M3: (a) si R = 1, TUU = t actual (está en el conjunto de trabajo); (b) si R = 0 y edad = t − TUU **> τ**, se expulsa (está **fuera** del conjunto de trabajo) y el barrido termina; (c) si R = 0 y edad ≤ τ, se recuerda el de mayor edad. Si nadie cumple (b), se expulsa el de mayor edad con R = 0. Si todos tienen R = 1, se expulsa el de menor índice. |
+| 11 | **WSClock** | **τ = `WSCLOCK_TAU` = 4 tics**. Cada marco guarda R, M y el tiempo del último uso. En un acierto: R = 1, se actualiza el tiempo y `M |= W`. El puntero recorre los marcos: si R = 1, se pone R = 0, se actualiza el tiempo y avanza. Si R = 0 y edad > τ con M = 0, la página es la víctima. Si R = 0 y edad > τ con M = 1, se **programa la escritura** (M = 0, cuenta 1 escritura) y avanza. Si da una vuelta completa sin víctima, se elige el primer marco con R = 0 y M = 0. Si no existe, se elige el marco bajo el puntero. |
+| 12 | **Aleatorio** | Generador **LCG propio** `x = (1103515245·x + 12345) mod 2³¹`, semilla **42**, víctima = `x mod 3`. Se usa un generador propio para que el resultado sea reproducible en cualquier compilador. |
 
-## 1.6 Reparto del trabajo (2 algoritmos por integrante)
+## 1.6 Reparto del trabajo (2 algoritmos por integrante, igual que el boceto)
 
-| Integrante | Código | Algoritmos | Archivos |
+| Integrante | Código | Algoritmos | Archivos (`src/algoritmos/`) |
 |---|---|---|---|
-| 1. Angel Ismael Alvarez Catunta | 221945 | FIFO, Óptimo | `fifo.c`, `opt.c` |
-| 2. *[Por completar]* | — | LRU, LFU | `lru.c`, `lfu.c` |
-| 3. *[Por completar]* | — | MFU, Segunda Oportunidad | `mfu.c`, `reloj.c` |
-| 4. *[Por completar]* | — | Reloj Mejorado, Aleatorio | `reloj_mejorado.c`, `aleatorio.c` |
-| 5. *[Por completar]* | — | Aging, FIFO Segmentado | `aging.c`, `fifo_segmentado.c` |
-| 6. *[Por completar]* | — | Page Buffering, WSClock | `page_buffering.c`, `wsclock.c` |
+| 1. Angel Ismael Alvarez Catunta | 221945 | FIFO, Óptimo | `fifo.c`, `optimo.c` |
+| 2. *[Por completar]* | — | LRU, Reloj | `lru.c`, `reloj.c` |
+| 3. *[Por completar]* | — | NRU, LFU | `nru.c`, `lfu.c` |
+| 4. *[Por completar]* | — | MFU, Reloj Mejorado | `mfu.c`, `reloj_mejorado.c` |
+| 5. *[Por completar]* | — | Aging, Working Set | `aging.c`, `working_set.c` |
+| 6. *[Por completar]* | — | WSClock, Aleatorio | `wsclock.c`, `aleatorio.c` |
 
 En cada pareja hay un algoritmo sencillo y uno complejo, para que la carga quede equilibrada.
 

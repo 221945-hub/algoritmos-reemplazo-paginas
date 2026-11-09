@@ -123,7 +123,7 @@ Verificaciones:
   [ OK ] 7 paginas distintas {0,1,2,3,4,5,7}
   [ OK ] pagina 0 referenciada 8 veces
   [ OK ] 12 escrituras (40%)
-  [ OK ] FIFO segmentado: primaria + secundaria = 3 marcos
+  [ OK ] periodo de reloj y ventanas tau definidos
 
 Resultado: ENTORNO LISTO (0 fallas)
 ```
