@@ -9,6 +9,7 @@
  *   ./simulador -c 1,2,3,4,1    cadena personalizada (todas lecturas)
  *   ./simulador -c 1,2,3 -w 0,1,0   patrón de escrituras propio (1 = W)
  *   ./simulador -o salida.csv   exportar resultados a CSV
+ *   ./simulador -t trazas.csv   exportar la traza paso a paso a CSV
  *   ./simulador -l              listar algoritmos
  *   ./simulador -h              ayuda
  */
@@ -28,6 +29,7 @@ static void ayuda(const char *prog)
            "  -c LISTA    cadena personalizada, ej: 1,2,3,4,1,2,5\n"
            "  -w LISTA    patron de escrituras (0=R, 1=W), mismo largo que la cadena\n"
            "  -o ARCHIVO  exportar resultados a CSV\n"
+           "  -t ARCHIVO  exportar la traza paso a paso a CSV\n"
            "  -l          listar algoritmos\n"
            "  -h          esta ayuda\n",
            prog, NUM_ALGORITMOS, MAX_MARCOS, NUM_MARCOS);
@@ -112,6 +114,46 @@ static void tabla_comparativa(const int seleccion[])
     printf("==========================================================================================\n");
 }
 
+/* Una fila por paso y algoritmo: sirve para armar las tablas del informe */
+static int exportar_trazas_csv(const char *ruta, const int seleccion[], const Config *cfg)
+{
+    FILE *fp = fopen(ruta, "w");
+    if (fp == NULL) {
+        perror(ruta);
+        return 0;
+    }
+    fprintf(fp, "ID,Algoritmo,Paso,Pagina,Operacion");
+    for (int k = 0; k < cfg->marcos; k++)
+        fprintf(fp, ",M%d", k + 1);
+    fprintf(fp, ",Resultado,Victima,Auxiliar\n");
+
+    for (int a = 0; a < NUM_ALGORITMOS; a++) {
+        const Resultado *r = &resultados[a];
+        if (!seleccion[a] || !r->implementado)
+            continue;
+        for (int i = 0; i < r->n; i++) {
+            const Paso *p = &r->pasos[i];
+            fprintf(fp, "%d,\"%s\",%d,%d,%c", ALGORITMOS[a].id, ALGORITMOS[a].nombre,
+                    i + 1, p->pagina, p->es_escritura ? 'W' : 'R');
+            for (int k = 0; k < cfg->marcos; k++) {
+                if (p->marcos[k] == MARCO_VACIO)
+                    fprintf(fp, ",-");
+                else
+                    fprintf(fp, ",%d", p->marcos[k]);
+            }
+            fprintf(fp, ",%c,", p->marco_cargado < 0 ? 'H' : 'F');
+            if (p->victima >= 0)
+                fprintf(fp, "%d", p->victima);
+            else
+                fprintf(fp, "-");
+            fprintf(fp, ",\"%s\"\n", p->aux);   /* aux nunca contiene comillas */
+        }
+    }
+    fclose(fp);
+    printf(" Trazas exportadas a: %s\n", ruta);
+    return 1;
+}
+
 static int exportar_csv(const char *ruta, const int seleccion[], const Config *cfg)
 {
     FILE *fp = fopen(ruta, "w");
@@ -141,6 +183,7 @@ int main(int argc, char *argv[])
     int alguno_elegido = 0;
     int solo_resumen = 0;
     const char *ruta_csv = NULL;
+    const char *ruta_trazas = NULL;
     int cadena_propia[MAX_REFS];
     int escritura_propia[MAX_REFS];
     const char *texto_w = NULL;
@@ -150,7 +193,7 @@ int main(int argc, char *argv[])
         const char *op = argv[a];
         int necesita_valor = (strcmp(op, "-a") == 0 || strcmp(op, "-m") == 0 ||
                               strcmp(op, "-c") == 0 || strcmp(op, "-o") == 0 ||
-                              strcmp(op, "-w") == 0);
+                              strcmp(op, "-w") == 0 || strcmp(op, "-t") == 0);
         const char *valor = NULL;
 
         if (necesita_valor) {
@@ -194,6 +237,8 @@ int main(int argc, char *argv[])
             cfg.n = n;
         } else if (strcmp(op, "-w") == 0) {
             texto_w = valor;           /* se valida al final: depende de -c */
+        } else if (strcmp(op, "-t") == 0) {
+            ruta_trazas = valor;
         } else if (strcmp(op, "-o") == 0) {
             ruta_csv = valor;
         } else {
@@ -237,6 +282,8 @@ int main(int argc, char *argv[])
 
     tabla_comparativa(seleccion);
 
+    if (ruta_trazas != NULL && !exportar_trazas_csv(ruta_trazas, seleccion, &cfg))
+        return 1;
     if (ruta_csv != NULL && !exportar_csv(ruta_csv, seleccion, &cfg))
         return 1;
     return 0;

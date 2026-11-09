@@ -1,0 +1,97 @@
+ID,Algoritmo,Responsable,Marcos,Referencias,Fallos,Aciertos,Tasa_Fallos_Pct,Tasa_Aciertos_Pct,Escrituras_Disco
+1,"FIFO","Integrante 1",1,30,30,0,100.00,0.00,12
+2,"Optimo (OPT)","Integrante 1",1,30,30,0,100.00,0.00,12
+3,"LRU","Integrante 2",1,30,30,0,100.00,0.00,12
+4,"Reloj (Clock)","Integrante 2",1,30,30,0,100.00,0.00,12
+5,"NRU","Integrante 3",1,30,30,0,100.00,0.00,12
+6,"LFU","Integrante 3",1,30,30,0,100.00,0.00,12
+7,"MFU","Integrante 4",1,30,30,0,100.00,0.00,12
+8,"Reloj Mejorado","Integrante 4",1,30,30,0,100.00,0.00,12
+9,"Aging","Integrante 5",1,30,30,0,100.00,0.00,12
+10,"Working Set","Integrante 5",1,30,30,0,100.00,0.00,12
+11,"WSClock","Integrante 6",1,30,30,0,100.00,0.00,12
+12,"Aleatorio (RAND)","Integrante 6",1,30,30,0,100.00,0.00,12
+1,"FIFO","Integrante 1",2,30,25,5,83.33,16.67,11
+2,"Optimo (OPT)","Integrante 1",2,30,21,9,70.00,30.00,9
+3,"LRU","Integrante 2",2,30,27,3,90.00,10.00,11
+4,"Reloj (Clock)","Integrante 2",2,30,25,5,83.33,16.67,11
+5,"NRU","Integrante 3",2,30,26,4,86.67,13.33,9
+6,"LFU","Integrante 3",2,30,23,7,76.67,23.33,7
+7,"MFU","Integrante 4",2,30,25,5,83.33,16.67,11
+8,"Reloj Mejorado","Integrante 4",2,30,27,3,90.00,10.00,11
+9,"Aging","Integrante 5",2,30,27,3,90.00,10.00,11
+10,"Working Set","Integrante 5",2,30,24,6,80.00,20.00,9
+11,"WSClock","Integrante 6",2,30,26,4,86.67,13.33,9
+12,"Aleatorio (RAND)","Integrante 6",2,30,25,5,83.33,16.67,11
+1,"FIFO","Integrante 1",3,30,25,5,83.33,16.67,9
+2,"Optimo (OPT)","Integrante 1",3,30,15,15,50.00,50.00,6
+3,"LRU","Integrante 2",3,30,22,8,73.33,26.67,8
+4,"Reloj (Clock)","Integrante 2",3,30,24,6,80.00,20.00,9
+5,"NRU","Integrante 3",3,30,21,9,70.00,30.00,7
+6,"LFU","Integrante 3",3,30,19,11,63.33,36.67,4
+7,"MFU","Integrante 4",3,30,25,5,83.33,16.67,9
+8,"Reloj Mejorado","Integrante 4",3,30,21,9,70.00,30.00,6
+9,"Aging","Integrante 5",3,30,22,8,73.33,26.67,8
+10,"Working Set","Integrante 5",3,30,20,10,66.67,33.33,7
+11,"WSClock","Integrante 6",3,30,19,11,63.33,36.67,4
+12,"Aleatorio (RAND)","Integrante 6",3,30,20,10,66.67,33.33,8
+1,"FIFO","Integrante 1",4,30,19,11,63.33,36.67,7
+2,"Optimo (OPT)","Integrante 1",4,30,12,18,40.00,60.00,3
+3,"LRU","Integrante 2",4,30,17,13,56.67,43.33,5
+4,"Reloj (Clock)","Integrante 2",4,30,17,13,56.67,43.33,7
+5,"NRU","Integrante 3",4,30,13,17,43.33,56.67,1
+6,"LFU","Integrante 3",4,30,13,17,43.33,56.67,1
+7,"MFU","Integrante 4",4,30,19,11,63.33,36.67,8
+8,"Reloj Mejorado","Integrante 4",4,30,16,14,53.33,46.67,4
+9,"Aging","Integrante 5",4,30,17,13,56.67,43.33,5
+10,"Working Set","Integrante 5",4,30,15,15,50.00,50.00,3
+11,"WSClock","Integrante 6",4,30,14,16,46.67,53.33,1
+12,"Aleatorio (RAND)","Integrante 6",4,30,17,13,56.67,43.33,6
+1,"FIFO","Integrante 1",5,30,15,15,50.00,50.00,5
+2,"Optimo (OPT)","Integrante 1",5,30,9,21,30.00,70.00,1
+3,"LRU","Integrante 2",5,30,11,19,36.67,63.33,3
+4,"Reloj (Clock)","Integrante 2",5,30,13,17,43.33,56.67,4
+5,"NRU","Integrante 3",5,30,11,19,36.67,63.33,1
+6,"LFU","Integrante 3",5,30,9,21,30.00,70.00,1
+7,"MFU","Integrante 4",5,30,13,17,43.33,56.67,5
+8,"Reloj Mejorado","Integrante 4",5,30,12,18,40.00,60.00,2
+9,"Aging","Integrante 5",5,30,11,19,36.67,63.33,3
+10,"Working Set","Integrante 5",5,30,12,18,40.00,60.00,3
+11,"WSClock","Integrante 6",5,30,12,18,40.00,60.00,1
+12,"Aleatorio (RAND)","Integrante 6",5,30,13,17,43.33,56.67,4
+1,"FIFO","Integrante 1",6,30,7,23,23.33,76.67,0
+2,"Optimo (OPT)","Integrante 1",6,30,7,23,23.33,76.67,0
+3,"LRU","Integrante 2",6,30,8,22,26.67,73.33,1
+4,"Reloj (Clock)","Integrante 2",6,30,7,23,23.33,76.67,0
+5,"NRU","Integrante 3",6,30,7,23,23.33,76.67,0
+6,"LFU","Integrante 3",6,30,8,22,26.67,73.33,1
+7,"MFU","Integrante 4",6,30,10,20,33.33,66.67,3
+8,"Reloj Mejorado","Integrante 4",6,30,7,23,23.33,76.67,0
+9,"Aging","Integrante 5",6,30,8,22,26.67,73.33,1
+10,"Working Set","Integrante 5",6,30,7,23,23.33,76.67,0
+11,"WSClock","Integrante 6",6,30,7,23,23.33,76.67,0
+12,"Aleatorio (RAND)","Integrante 6",6,30,12,18,40.00,60.00,4
+1,"FIFO","Integrante 1",7,30,7,23,23.33,76.67,0
+2,"Optimo (OPT)","Integrante 1",7,30,7,23,23.33,76.67,0
+3,"LRU","Integrante 2",7,30,7,23,23.33,76.67,0
+4,"Reloj (Clock)","Integrante 2",7,30,7,23,23.33,76.67,0
+5,"NRU","Integrante 3",7,30,7,23,23.33,76.67,0
+6,"LFU","Integrante 3",7,30,7,23,23.33,76.67,0
+7,"MFU","Integrante 4",7,30,7,23,23.33,76.67,0
+8,"Reloj Mejorado","Integrante 4",7,30,7,23,23.33,76.67,0
+9,"Aging","Integrante 5",7,30,7,23,23.33,76.67,0
+10,"Working Set","Integrante 5",7,30,7,23,23.33,76.67,0
+11,"WSClock","Integrante 6",7,30,7,23,23.33,76.67,0
+12,"Aleatorio (RAND)","Integrante 6",7,30,7,23,23.33,76.67,0
+1,"FIFO","Integrante 1",8,30,7,23,23.33,76.67,0
+2,"Optimo (OPT)","Integrante 1",8,30,7,23,23.33,76.67,0
+3,"LRU","Integrante 2",8,30,7,23,23.33,76.67,0
+4,"Reloj (Clock)","Integrante 2",8,30,7,23,23.33,76.67,0
+5,"NRU","Integrante 3",8,30,7,23,23.33,76.67,0
+6,"LFU","Integrante 3",8,30,7,23,23.33,76.67,0
+7,"MFU","Integrante 4",8,30,7,23,23.33,76.67,0
+8,"Reloj Mejorado","Integrante 4",8,30,7,23,23.33,76.67,0
+9,"Aging","Integrante 5",8,30,7,23,23.33,76.67,0
+10,"Working Set","Integrante 5",8,30,7,23,23.33,76.67,0
+11,"WSClock","Integrante 6",8,30,7,23,23.33,76.67,0
+12,"Aleatorio (RAND)","Integrante 6",8,30,7,23,23.33,76.67,0

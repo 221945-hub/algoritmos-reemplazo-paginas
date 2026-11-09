@@ -15,7 +15,7 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 | 3 | Estructura modular del código en C | ✅ | [docs/PASO_03_estructura.md](docs/PASO_03_estructura.md) |
 | 4 | Implementar los 12 algoritmos | ✅ | [docs/PASO_04_algoritmos.md](docs/PASO_04_algoritmos.md) |
 | 5 | Validar resultados | ✅ | [docs/PASO_05_validacion.md](docs/PASO_05_validacion.md) |
-| 6 | Generar trazas, CSV y gráficas | ⏳ | — |
+| 6 | Generar trazas, CSV y gráficas | ✅ | [docs/PASO_06_resultados.md](docs/PASO_06_resultados.md) |
 | 7 | Redactar el informe | ⏳ | — |
 | 8 | Integración final y entrega | ⏳ | — |
 
@@ -24,7 +24,10 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 ```
 ├── docs/        Documentación de cada paso (+ evidencias/)
 ├── src/         Código fuente en C (+ Makefile)
-└── tests/       Validación: referencia.py y validar.py
+├── tests/       Validación: referencia.py y validar.py
+├── scripts/     generar_resultados.sh y graficas.py
+├── resultados/  Trazas (.txt) y métricas (.csv) generadas por el simulador
+└── graficas/    Gráficas comparativas (PNG y SVG)
 ```
 
 ## Compilar (Linux / WSL)
@@ -33,11 +36,18 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 cd src
 make                  # compila todo en ../build/
 make run              # traza de los 12 algoritmos + tabla comparativa
-../build/simulador -h # ver todas las opciones (-a, -r, -m, -c, -w, -o, -l)
+../build/simulador -h # ver todas las opciones (-a, -r, -m, -c, -w, -o, -t, -l)
 make test             # prueba de entorno y parámetros
 make validar          # validación formal: 63 pruebas (requiere python3)
+make resultados       # regenera resultados/ (trazas y CSV)
 make clean
 ```
+
+Gráficas (requiere matplotlib), desde la raíz: `python scripts/graficas.py`
+
+## Resultado principal (3 marcos, 30 referencias)
+
+![Fallos por algoritmo](graficas/g1_fallos_por_algoritmo.png)
 
 ## Integrantes
 

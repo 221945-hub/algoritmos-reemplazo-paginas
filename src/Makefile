@@ -19,7 +19,7 @@ HEADERS = $(wildcard *.h)
 # Objetos (se compilan por separado: solo se recompila lo que cambió)
 SIM_OBJ = $(patsubst %.c,$(BUILD)/%.o,$(SIM_SRC))
 
-.PHONY: all run test validar validar-rapido clean
+.PHONY: all run test validar validar-rapido resultados clean
 
 all: $(BUILD)/simulador $(BUILD)/test_parametros
 
@@ -46,6 +46,10 @@ validar:
 
 validar-rapido:
 	python3 ../tests/validar.py --rapido
+
+# Paso 6: datos del informe (trazas, CSV) en ../resultados/
+resultados: $(BUILD)/simulador
+	bash ../scripts/generar_resultados.sh
 
 clean:
 	rm -rf $(BUILD)
