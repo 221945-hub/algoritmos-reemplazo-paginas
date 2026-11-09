@@ -1,6 +1,7 @@
 # Makefile - Simulador de algoritmos de reemplazo de páginas
 # Uso (desde src/):
-#   make          compila todo
+#   make          compila el simulador y la prueba de parámetros
+#   make run      compila y ejecuta el simulador completo
 #   make test     compila y ejecuta la prueba de parámetros
 #   make clean    borra los binarios
 
@@ -8,18 +9,32 @@ CC      = gcc
 CFLAGS  = -std=c11 -Wall -Wextra -pedantic -O2
 BUILD   = ../build
 
-# Módulos comunes (se irán agregando en los pasos 3 y 4)
-COMUNES = parametros.c
+# Fuentes
+COMUNES = parametros.c comun.c
+ALGOS   = $(wildcard algoritmos/*.c)
+SIM_SRC = main.c algoritmos.c $(COMUNES) $(ALGOS)
+HEADERS = $(wildcard *.h)
 
-.PHONY: all test clean
+# Objetos (se compilan por separado: solo se recompila lo que cambió)
+SIM_OBJ = $(patsubst %.c,$(BUILD)/%.o,$(SIM_SRC))
 
-all: $(BUILD)/test_parametros
+.PHONY: all run test clean
 
-$(BUILD):
-	mkdir -p $(BUILD)
+all: $(BUILD)/simulador $(BUILD)/test_parametros
 
-$(BUILD)/test_parametros: test_parametros.c $(COMUNES) parametros.h | $(BUILD)
-	$(CC) $(CFLAGS) -o $@ test_parametros.c $(COMUNES)
+$(BUILD)/simulador: $(SIM_OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BUILD)/test_parametros: $(BUILD)/test_parametros.o $(BUILD)/parametros.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+# Regla genérica: .c -> .o (crea la subcarpeta si hace falta)
+$(BUILD)/%.o: %.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+run: $(BUILD)/simulador
+	$(BUILD)/simulador
 
 test: $(BUILD)/test_parametros
 	$(BUILD)/test_parametros
