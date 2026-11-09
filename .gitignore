@@ -18,3 +18,7 @@ Tema3.pdf
 caratula.docx
 gemini-code-*.md
 Proyecto_Algoritmos_Reemplazo_Paginas_Unificado.zip
+
+# Python
+__pycache__/
+*.pyc

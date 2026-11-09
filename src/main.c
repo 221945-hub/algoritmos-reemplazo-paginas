@@ -7,6 +7,7 @@
  *   ./simulador -r              solo la tabla comparativa (sin trazas)
  *   ./simulador -m 4            usar 4 marcos (1..MAX_MARCOS)
  *   ./simulador -c 1,2,3,4,1    cadena personalizada (todas lecturas)
+ *   ./simulador -c 1,2,3 -w 0,1,0   patrón de escrituras propio (1 = W)
  *   ./simulador -o salida.csv   exportar resultados a CSV
  *   ./simulador -l              listar algoritmos
  *   ./simulador -h              ayuda
@@ -25,6 +26,7 @@ static void ayuda(const char *prog)
            "  -r          mostrar solo la tabla comparativa\n"
            "  -m M        numero de marcos (1..%d, por defecto %d)\n"
            "  -c LISTA    cadena personalizada, ej: 1,2,3,4,1,2,5\n"
+           "  -w LISTA    patron de escrituras (0=R, 1=W), mismo largo que la cadena\n"
            "  -o ARCHIVO  exportar resultados a CSV\n"
            "  -l          listar algoritmos\n"
            "  -h          esta ayuda\n",
@@ -53,10 +55,13 @@ static int parsear_cadena(const char *texto, int destino[], int max)
             return -1;
         destino[n++] = (int)v;
         p = fin;
-        if (*p == ',')
+        if (*p == ',') {
             p++;
-        else if (*p != '\0')
+            if (*p == '\0')        /* coma final: "1,2," es inválida */
+                return -1;
+        } else if (*p != '\0') {
             return -1;
+        }
     }
     return n > 0 ? n : -1;
 }
@@ -137,12 +142,15 @@ int main(int argc, char *argv[])
     int solo_resumen = 0;
     const char *ruta_csv = NULL;
     int cadena_propia[MAX_REFS];
+    int escritura_propia[MAX_REFS];
+    const char *texto_w = NULL;
     Config cfg = { REFS, ESCRITURA, NUM_REFS, NUM_MARCOS };
 
     for (int a = 1; a < argc; a++) {
         const char *op = argv[a];
         int necesita_valor = (strcmp(op, "-a") == 0 || strcmp(op, "-m") == 0 ||
-                              strcmp(op, "-c") == 0 || strcmp(op, "-o") == 0);
+                              strcmp(op, "-c") == 0 || strcmp(op, "-o") == 0 ||
+                              strcmp(op, "-w") == 0);
         const char *valor = NULL;
 
         if (necesita_valor) {
@@ -184,6 +192,8 @@ int main(int argc, char *argv[])
             cfg.refs = cadena_propia;
             cfg.escritura = NULL;      /* cadena propia: todas lecturas */
             cfg.n = n;
+        } else if (strcmp(op, "-w") == 0) {
+            texto_w = valor;           /* se valida al final: depende de -c */
         } else if (strcmp(op, "-o") == 0) {
             ruta_csv = valor;
         } else {
@@ -191,6 +201,20 @@ int main(int argc, char *argv[])
             ayuda(argv[0]);
             return 2;
         }
+    }
+
+    if (texto_w != NULL) {
+        int n = parsear_cadena(texto_w, escritura_propia, MAX_REFS);
+        int valido = (n == cfg.n);
+        for (int i = 0; valido && i < n; i++)
+            if (escritura_propia[i] != 0 && escritura_propia[i] != 1)
+                valido = 0;
+        if (!valido) {
+            fprintf(stderr, "Error: patron de escrituras invalido '%s' "
+                            "(solo 0/1 y %d valores, igual que la cadena)\n", texto_w, cfg.n);
+            return 2;
+        }
+        cfg.escritura = escritura_propia;
     }
 
     if (!alguno_elegido)

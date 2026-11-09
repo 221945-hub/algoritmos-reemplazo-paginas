@@ -3,6 +3,7 @@
 #   make          compila el simulador y la prueba de parámetros
 #   make run      compila y ejecuta el simulador completo
 #   make test     compila y ejecuta la prueba de parámetros
+#   make validar  validación formal completa (Paso 5)
 #   make clean    borra los binarios
 
 CC      = gcc
@@ -18,7 +19,7 @@ HEADERS = $(wildcard *.h)
 # Objetos (se compilan por separado: solo se recompila lo que cambió)
 SIM_OBJ = $(patsubst %.c,$(BUILD)/%.o,$(SIM_SRC))
 
-.PHONY: all run test clean
+.PHONY: all run test validar validar-rapido clean
 
 all: $(BUILD)/simulador $(BUILD)/test_parametros
 
@@ -38,6 +39,13 @@ run: $(BUILD)/simulador
 
 test: $(BUILD)/test_parametros
 	$(BUILD)/test_parametros
+
+# Paso 5: validación formal (requiere python3)
+validar:
+	python3 ../tests/validar.py
+
+validar-rapido:
+	python3 ../tests/validar.py --rapido
 
 clean:
 	rm -rf $(BUILD)

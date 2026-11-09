@@ -14,7 +14,7 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 | 2 | Preparar el entorno Linux (WSL, gcc, make) | ✅ | [docs/PASO_02_entorno.md](docs/PASO_02_entorno.md) |
 | 3 | Estructura modular del código en C | ✅ | [docs/PASO_03_estructura.md](docs/PASO_03_estructura.md) |
 | 4 | Implementar los 12 algoritmos | ✅ | [docs/PASO_04_algoritmos.md](docs/PASO_04_algoritmos.md) |
-| 5 | Validar resultados | ⏳ | — |
+| 5 | Validar resultados | ✅ | [docs/PASO_05_validacion.md](docs/PASO_05_validacion.md) |
 | 6 | Generar trazas, CSV y gráficas | ⏳ | — |
 | 7 | Redactar el informe | ⏳ | — |
 | 8 | Integración final y entrega | ⏳ | — |
@@ -22,8 +22,9 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 ## Estructura del repositorio
 
 ```
-├── docs/        Documentación de cada paso
-└── src/         Código fuente en C (+ Makefile)
+├── docs/        Documentación de cada paso (+ evidencias/)
+├── src/         Código fuente en C (+ Makefile)
+└── tests/       Validación: referencia.py y validar.py
 ```
 
 ## Compilar (Linux / WSL)
@@ -32,8 +33,9 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 cd src
 make                  # compila todo en ../build/
 make run              # traza de los 12 algoritmos + tabla comparativa
-../build/simulador -h # ver todas las opciones (-a, -r, -m, -c, -o, -l)
+../build/simulador -h # ver todas las opciones (-a, -r, -m, -c, -w, -o, -l)
 make test             # prueba de entorno y parámetros
+make validar          # validación formal: 63 pruebas (requiere python3)
 make clean
 ```
 
