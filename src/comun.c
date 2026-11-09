@@ -45,10 +45,25 @@ void registrar_paso(Resultado *r, const Config *cfg, int i, const int marcos[],
         va_end(args);
     }
 
-    if (marco_cargado < 0)
+    if (marco_cargado < 0) {
         r->aciertos++;
-    else
+        int idx = buscar_pagina(marcos, cfg->marcos, p->pagina);
+        if (idx >= 0 && p->es_escritura)
+            r->sucio[idx] = 1;
+    } else {
         r->fallos++;
+        if (victima >= 0 && r->sucio[marco_cargado])
+            r->escrituras_disco++;          /* la víctima sucia se escribe */
+        r->sucio[marco_cargado] = p->es_escritura;
+    }
+}
+
+void marcar_escrito(Resultado *r, int marco)
+{
+    if (r->sucio[marco]) {
+        r->escrituras_disco++;
+        r->sucio[marco] = 0;
+    }
 }
 
 int buscar_pagina(const int marcos[], int m, int pagina)

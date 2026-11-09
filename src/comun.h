@@ -41,7 +41,8 @@ typedef struct {
     int num_marcos;
     int fallos;
     int aciertos;
-    int escrituras_disco;       /* páginas sucias escritas al expulsarlas  */
+    int escrituras_disco;       /* páginas sucias escritas a disco         */
+    int sucio[MAX_MARCOS];      /* uso interno: marco modificado (dirty)   */
     Paso pasos[MAX_REFS];
 } Resultado;
 
@@ -55,6 +56,13 @@ void marcos_vaciar(int marcos[], int m);
 void registrar_paso(Resultado *r, const Config *cfg, int i, const int marcos[],
                     int marco_cargado, int victima, const char *aux, ...)
     __attribute__((format(printf, 7, 8)));
+
+/* Escrituras a disco (contabilidad común a todos los algoritmos):
+ * registrar_paso() marca un marco como sucio cuando se escribe en él y,
+ * al expulsar una página sucia, suma 1 a escrituras_disco.
+ * marcar_escrito() se usa cuando un algoritmo (WSClock) escribe la página
+ * a disco ANTES de expulsarla: cuenta la escritura y deja el marco limpio. */
+void marcar_escrito(Resultado *r, int marco);
 
 /* ---- Búsquedas en los marcos ---- */
 int buscar_pagina(const int marcos[], int m, int pagina);  /* índice o -1 */

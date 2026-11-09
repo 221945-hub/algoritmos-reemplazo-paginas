@@ -13,7 +13,7 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 | 1 | Fijar los parámetros del experimento | ✅ | [docs/PASO_01_parametros.md](docs/PASO_01_parametros.md) |
 | 2 | Preparar el entorno Linux (WSL, gcc, make) | ✅ | [docs/PASO_02_entorno.md](docs/PASO_02_entorno.md) |
 | 3 | Estructura modular del código en C | ✅ | [docs/PASO_03_estructura.md](docs/PASO_03_estructura.md) |
-| 4 | Implementar los 12 algoritmos | ⏳ | — |
+| 4 | Implementar los 12 algoritmos | ✅ | [docs/PASO_04_algoritmos.md](docs/PASO_04_algoritmos.md) |
 | 5 | Validar resultados | ⏳ | — |
 | 6 | Generar trazas, CSV y gráficas | ⏳ | — |
 | 7 | Redactar el informe | ⏳ | — |
