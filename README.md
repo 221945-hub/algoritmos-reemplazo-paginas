@@ -52,7 +52,7 @@ Gráficas (requiere matplotlib), desde la raíz: `python scripts/graficas.py`
 
 ## Informe
 
-[informe/Informe_Proyecto_SO_Reemplazo_de_Paginas.docx](informe/Informe_Proyecto_SO_Reemplazo_de_Paginas.docx) (73 páginas; también en PDF). Se regenera con `python scripts/generar_informe.py`.
+[informe/Informe_Proyecto_SO_Reemplazo_de_Paginas.docx](informe/Informe_Proyecto_SO_Reemplazo_de_Paginas.docx) (28 páginas, centrado en el código de los 12 algoritmos; también en PDF). Se regenera con `python scripts/generar_informe.py`.
 
 ## Simulador web
 

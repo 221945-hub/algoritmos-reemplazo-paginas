@@ -286,11 +286,15 @@ def configurar_estilos(doc):
     # Estilos que Word usa al generar el índice (nombres internos "toc 1".."toc 3")
     for nivel, sangria in ((1, 0), (2, 0.25), (3, 0.5)):
         s = est.add_style(f"toc {nivel}", WD_STYLE_TYPE.PARAGRAPH)
+        s.element.styleId = f"TOC{nivel}"      # Word busca los estilos del índice por este id
+        s.element.attrib.pop(qn("w:customStyle"), None)   # estilo integrado, no personalizado
         s.base_style = est["Normal"]
         s.font.name, s.font.size = FUENTE, Pt(11)
         fijar_fuente(s.element, FUENTE)
         s.paragraph_format.left_indent = Inches(sangria)
-        s.paragraph_format.space_after = Pt(3)
+        s.paragraph_format.space_after = Pt(0)
+        s.paragraph_format.space_before = Pt(0)
+        s.paragraph_format.line_spacing = 1.0
         s.font.bold = (nivel == 1)
 
 
@@ -456,7 +460,7 @@ def leer(ruta):
 
 
 # =====================================================================
-# Secciones del informe
+# Secciones del informe (versión breve, centrada en el código)
 # =====================================================================
 def introduccion(doc):
     titulo(doc, "INTRODUCCIÓN", 1)
@@ -482,7 +486,6 @@ def capitulo1(doc):
     for t in C.CAP1["descripcion"]:
         par(doc, t)
     titulo(doc, "1.1.2 Identificación del problema", 3)
-    par(doc, "Los factores críticos que originan el problema son:")
     vinetas(doc, C.CAP1["identificacion"])
     titulo(doc, "1.2 Justificación", 2)
     for t in C.CAP1["justificacion"]:
@@ -495,241 +498,141 @@ def capitulo1(doc):
     for t in C.CAP1["metodologia"]:
         par(doc, t)
     titulo(doc, "1.5.1 Cronograma", 3)
-    par(doc, "La Tabla 1 detalla las fases, tareas, duración (en días hábiles), recursos asignados y "
-             "predecesoras, en el formato de una hoja de tareas de MS Project. La Figura 1 muestra el "
-             "diagrama de Gantt resultante.")
-    rotulo_tabla(doc, "Cronograma del proyecto por fases, tareas, recursos y predecesoras")
+    rotulo_tabla(doc, "Cronograma del proyecto (formato de hoja de tareas de MS Project)")
     c = WD_ALIGN_PARAGRAPH.CENTER
-    tabla(doc, ["ID", "Fase", "Tarea", "Días", "Recursos", "Pred.", "Semana"],
+    tabla(doc, ["ID", "Fase", "Tarea", "Días", "Recursos", "Pred.", "Sem."],
           [[a, b, t, str(d), r, p, s] for a, b, t, d, r, p, s in C.CRONOGRAMA],
-          [450, 1500, 3300, 550, 1610, 900, 1050], tam=9,
+          [400, 1550, 3500, 500, 1610, 900, 900], tam=8,
           alinear=[c, None, None, c, None, c, c])
-    nota(doc, "Integrante 1: Angel Ismael Alvarez Catunta. Los integrantes 2 a 6 se identifican en la carátula.")
-    figura(doc, os.path.join(RAIZ, "graficas", "g5_cronograma_gantt.png"),
-           "Diagrama de Gantt del proyecto", texto_nota="Elaboración propia a partir de la Tabla 1.")
+    nota(doc, "Integrante 1: Angel Ismael Alvarez Catunta; los integrantes 2 a 6 figuran en la carátula. "
+              "Duración total: 21 días hábiles.")
+
+
+def matriz_traza(doc, filas_csv):
+    """Traza compacta 3×30: filas Ref, Op, M1–M3 y Res; una columna por paso."""
+    n = len(filas_csv)
+    previo, cargado = ["-", "-", "-"], []
+    for f in filas_csv:
+        marcos = [f["M1"], f["M2"], f["M3"]]
+        cargado.append(next((k for k in range(3) if marcos[k] != previo[k]), -1)
+                       if f["Resultado"] == "F" else -1)
+        previo = marcos
+    filas = [["Ref"] + [f["Pagina"] for f in filas_csv],
+             ["Op"] + [f["Operacion"] for f in filas_csv]]
+    for k in range(3):
+        filas.append([f"M{k + 1}"] + [f[f"M{k + 1}"] for f in filas_csv])
+    filas.append(["Res"] + [f["Resultado"] for f in filas_csv])
+    filas.append(["Sale"] + [("" if f["Victima"] == "-" else f["Victima"]) for f in filas_csv])
+
+    def formato(fi, ci, celda, p):
+        if ci == 0:
+            for r in p.runs:
+                r.bold = True
+            return
+        paso = ci - 1
+        if 2 <= fi <= 4 and cargado[paso] == fi - 2:
+            sombrear_celda(celda, "FBE0D4")
+            for r in p.runs:
+                r.bold = True
+        if fi == 5 and p.runs and p.runs[0].text == "F":
+            p.runs[0].bold = True
+    tabla(doc, ["Paso"] + [str(i) for i in range(1, n + 1)], filas, [720] + [288] * n, tam=7,
+          alinear=[None] + [WD_ALIGN_PARAGRAPH.CENTER] * n, fmt_celda=formato)
 
 
 def capitulo2(doc, trazas, resumen):
     titulo(doc, "CAPÍTULO II: MARCO TEÓRICO Y MODELADO DE LOS ALGORITMOS", 1)
     titulo(doc, "2.1 Antecedentes internacionales", 2)
-    for i, (ref, cuerpo, rel) in enumerate(C.ANT_INTERNACIONALES, 1):
-        par(doc, f"**Antecedente internacional {i}.** " + ref)
-        par(doc, cuerpo)
-        par(doc, "**Relación con el proyecto:** " + rel)
-
+    for ref, cuerpo, rel in C.ANT_INTERNACIONALES:
+        par(doc, f"{ref} {cuerpo} **Relación con el proyecto:** {rel}")
     titulo(doc, "2.2 Antecedentes nacionales", 2)
-    for i, (ref, cuerpo, rel) in enumerate(C.ANT_NACIONALES, 1):
-        par(doc, f"**Antecedente nacional {i}.** " + ref)
-        par(doc, cuerpo)
-        par(doc, "**Relación con el proyecto:** " + rel)
-    p = par(doc, "**Antecedente nacional 2.** [COMPLETAR: agregar una tesis o artículo peruano verificado "
-                 "(por ejemplo, del repositorio institucional de la UNSAAC, de ALICIA/CONCYTEC o de RENATI) "
-                 "con autor(es), año, título, universidad, objetivo, método, resultados y relación con el "
-                 "proyecto, y añadir la referencia en la Bibliografía.]")
+    for ref, cuerpo, rel in C.ANT_NACIONALES:
+        par(doc, f"{ref} {cuerpo} **Relación con el proyecto:** {rel}")
+    p = par(doc, "**[COMPLETAR – Antecedente nacional 2]:** agregar una tesis o artículo peruano verificado "
+                 "(repositorio de la UNSAAC, ALICIA/CONCYTEC o RENATI) y su referencia en la Bibliografía.")
     for r in p.runs:
         r.font.highlight_color = WD_COLOR_INDEX.YELLOW
 
     titulo(doc, "2.3 Temas relacionados al proyecto con modelado de cada algoritmo", 2)
-    titulo(doc, "2.3.1 Fundamentos de la memoria virtual y condiciones del experimento", 3)
-    for sub, textos in C.FUNDAMENTOS:
-        par(doc, f"**{sub}.** " + textos[0])
-        for t in textos[1:]:
-            par(doc, t)
-    rotulo_tabla(doc, "Cadena oficial de 30 referencias y tipo de operación")
+    titulo(doc, "2.3.1 Condiciones del experimento", 3)
+    par(doc, C.CONDICIONES)
+    rotulo_tabla(doc, "Cadena oficial de 30 referencias (R = lectura, W = escritura)")
     refs = [r for r in trazas if r["ID"] == "1"]
-    anchos = [1100] + [275] * 30
-    filas = [["Página"] + [r["Pagina"] for r in refs], ["Operación"] + [r["Operacion"] for r in refs]]
-    tabla(doc, ["Paso"] + [str(i) for i in range(1, 31)], filas, [960] + [280] * 30, tam=7,
-          alinear=[None] + [WD_ALIGN_PARAGRAPH.CENTER] * 30)
-    nota(doc, "R = lectura, W = escritura. 7 páginas distintas; 12 escrituras (40 %). Páginas de datos (0 y 2) "
-              "se escriben con frecuencia; páginas de código (1, 5 y 7) solo se leen.")
+    tabla(doc, ["Paso"] + [str(i) for i in range(1, 31)],
+          [["Página"] + [r["Pagina"] for r in refs], ["Op"] + [r["Operacion"] for r in refs]],
+          [720] + [288] * 30, tam=7, alinear=[None] + [WD_ALIGN_PARAGRAPH.CENTER] * 30)
 
     por_alg = {}
     for r in trazas:
         por_alg.setdefault(int(r["ID"]), []).append(r)
     res = {int(r["ID"]): r for r in resumen}
 
-    for n, (aid, archivo, nombre, integrante, teoria, ventajas, desventajas, complejidad,
-            belady, analisis, citas) in enumerate(C.ALGORITMOS, 2):
+    for n, (aid, archivo, nombre, integrante, principio, ventaja, desventaja,
+            belady, observacion, cita) in enumerate(C.ALGORITMOS, 2):
         nom_int, _ = C.INTEGRANTES[integrante - 1]
+        corto = nombre.split(" (")[0]
         titulo(doc, f"2.3.{n} Algoritmo {aid}: {nombre}", 3)
-        par(doc, f"*Responsable: Integrante {integrante} – {nom_int}*")
-
-        doc.add_paragraph("a) Fundamento teórico y principio de operación", style="Etiqueta")
-        for t in teoria:
-            par(doc, t)
-        rotulo_tabla(doc, f"Ventajas, desventajas, complejidad y anomalía de Belády de {nombre.split(' (')[0]}")
-        n_filas = max(len(ventajas), len(desventajas))
-        filas = [["• " + ventajas[i] if i < len(ventajas) else "",
-                  "• " + desventajas[i] if i < len(desventajas) else ""] for i in range(n_filas)]
-        filas.append([f"**Complejidad:** {complejidad}", f"**Anomalía de Belády:** {belady}"])
-        tabla(doc, ["Ventajas", "Desventajas"], filas, [4680, 4680], tam=10)
-
-        doc.add_paragraph("b) Modelado y traza completa paso a paso", style="Etiqueta")
+        par(doc, f"*Responsable: Integrante {integrante} – {nom_int}.*")
+        par(doc, f"**Principio de operación.** {principio} **Ventaja:** {ventaja} **Desventaja:** "
+                 f"{desventaja} **Anomalía de Belády:** {belady} ({cita}).")
         r = res[aid]
-        par(doc, f"La Tabla {contador['tabla'] + 1} muestra la ejecución de {nombre.split(' (')[0]} sobre la "
-                 "cadena oficial con 3 marcos, tal como la imprime el simulador en C.")
-        rotulo_tabla(doc, f"Traza de {nombre.split(' (')[0]} con 3 marcos y 30 referencias")
-        filas, previo = [], ["-", "-", "-"]
-        cargados = []
-        for fila in por_alg[aid]:
-            marcos = [fila["M1"], fila["M2"], fila["M3"]]
-            cargado = next((k for k in range(3) if marcos[k] != previo[k]), -1) if fila["Resultado"] == "F" else -1
-            cargados.append(cargado)
-            filas.append([fila["Paso"], fila["Pagina"], fila["Operacion"]] + marcos +
-                         ["Fallo" if fila["Resultado"] == "F" else "Acierto", fila["Victima"], fila["Auxiliar"]])
-            previo = marcos
-
-        def formato(fi, ci, celda, p, cargados=cargados):
-            if 3 <= ci <= 5 and cargados[fi] == ci - 3:
-                for run in p.runs:
-                    run.bold = True
-                sombrear_celda(celda, "FBE0D4")
-            if ci == 6 and p.runs and p.runs[0].text == "Fallo":
-                p.runs[0].bold = True
-            if ci == 8:
-                for run in p.runs:
-                    run.font.name = MONO
-                    fijar_fuente(run._r, MONO)
-                    run.font.size = Pt(7)
-        cen = WD_ALIGN_PARAGRAPH.CENTER
-        tabla(doc, ["Paso", "Ref", "Op", "M1", "M2", "M3", "Resultado", "Víctima", "Variables auxiliares"],
-              filas, [470, 450, 400, 430, 430, 430, 880, 760, 5110], tam=8,
-              alinear=[cen] * 8 + [None], fmt_celda=formato)
-        nota(doc, "En negrita y sombreada, la página cargada en ese paso. Fuente: "
-                  f"`resultados/trazas/{aid:02d}_{archivo}.txt`.")
-        par(doc, f"**Resumen estadístico:** {r['Fallos']} fallos de página, {r['Aciertos']} aciertos, "
-                 f"tasa de fallos {float(r['Tasa_Fallos_Pct']):.2f} % (tasa de aciertos "
-                 f"{float(r['Tasa_Aciertos_Pct']):.2f} %) y {r['Escrituras_Disco']} escrituras a disco.")
-        for t in analisis:
-            par(doc, t)
-
-        doc.add_paragraph("c) Código fuente en lenguaje C para Linux", style="Etiqueta")
-        par(doc, f"Módulo `src/algoritmos/{archivo}.c`. Se compila junto con los módulos comunes del Anexo A "
-                 "mediante `make` (gcc -std=c11 -Wall -Wextra -pedantic -O2) y se ejecuta con "
-                 f"`./simulador -a {aid}`, que imprime la traza anterior y el conteo de fallos.")
+        rotulo_tabla(doc, f"Traza de {corto} con 3 marcos y 30 referencias")
+        matriz_traza(doc, por_alg[aid])
+        par(doc, f"**Resultado:** {r['Fallos']} fallos, {r['Aciertos']} aciertos, tasa de fallos "
+                 f"{float(r['Tasa_Fallos_Pct']):.2f} % y {r['Escrituras_Disco']} escrituras a disco. "
+                 f"{observacion}")
+        p = doc.add_paragraph(style="Etiqueta")
+        texto_con_formato(p, f"Código fuente en C: `src/algoritmos/{archivo}.c` (ejecución: "
+                             f"`./simulador -a {aid}`)")
         bloque_codigo(doc, leer(os.path.join(SRC, "algoritmos", f"{archivo}.c")))
-
-        doc.add_paragraph("d) Citas bibliográficas", style="Etiqueta")
-        par(doc, f"Fundamentado en {citas}")
 
 
 def evaluacion(doc, resumen):
-    titulo(doc, "2.4 Evaluación comparativa de resultados", 2)
-    par(doc, "La Tabla siguiente consolida los resultados de los 12 algoritmos bajo las mismas condiciones "
-             "(3 marcos, cadena oficial de 30 referencias).")
-    rotulo_tabla(doc, "Resultados de los 12 algoritmos con 3 marcos")
+    titulo(doc, "2.4 Comparación de resultados", 2)
+    rotulo_tabla(doc, "Resultados de los 12 algoritmos con 3 marcos y 30 referencias")
     nombres = {a[0]: a[2].split(" (")[0] for a in C.ALGORITMOS}
-    filas = [[r["ID"], nombres[int(r["ID"])], f"Integrante {r['Responsable'].split()[-1]}", r["Fallos"],
-              r["Aciertos"], f"{float(r['Tasa_Fallos_Pct']):.2f} %", r["Escrituras_Disco"]] for r in resumen]
+    filas = [[r["ID"], nombres[int(r["ID"])], r["Fallos"], r["Aciertos"],
+              f"{float(r['Tasa_Fallos_Pct']):.2f} %", r["Escrituras_Disco"]] for r in resumen]
     c = WD_ALIGN_PARAGRAPH.CENTER
-    tabla(doc, ["#", "Algoritmo", "Responsable", "Fallos", "Aciertos", "% Fallos", "Escrituras"],
-          filas, [450, 2400, 1700, 1100, 1100, 1310, 1300], tam=10, alinear=[c, None, None, c, c, c, c])
+    tabla(doc, ["#", "Algoritmo", "Fallos", "Aciertos", "% Fallos", "Escrituras"],
+          filas, [500, 3460, 1300, 1300, 1500, 1300], tam=10, alinear=[c, None, c, c, c, c])
     nota(doc)
     g = os.path.join(RAIZ, "graficas")
-    figura(doc, os.path.join(g, "g1_fallos_por_algoritmo.png"), "Fallos de página por algoritmo (3 marcos)")
-    par(doc, "El Óptimo marca el mínimo teórico (15 fallos). Los mejores algoritmos realizables son LFU y "
-             "WSClock (19) y los peores, FIFO y MFU (25): entre el mejor y el peor algoritmo real hay 6 fallos, "
-             "es decir, el 20 % de las referencias.")
-    figura(doc, os.path.join(g, "g2_costo_es.png"), "Costo total de E/S: lecturas (fallos) más escrituras de páginas sucias")
-    par(doc, "Al sumar las escrituras, LFU y WSClock siguen primeros (23 operaciones) y son los que menos "
-             "escriben (4), porque conservan la página 0, la más modificada. Reloj Mejorado (27) supera a NRU "
-             "(28) con los mismos fallos, lo que confirma su objetivo de diseño: preferir víctimas limpias.")
-    figura(doc, os.path.join(g, "g3_curva_marcos.png"), "Fallos de página según la cantidad de marcos (1 a 8)")
-    par(doc, "Con 1 marco todos obtienen 30 fallos y con 7 o más, 7 fallos (los obligatorios). Con 3 marcos "
-             "las diferencias son máximas (de 15 a 25), lo que justifica la condición del experimento. FIFO y "
-             "MFU no mejoran de 2 a 3 marcos, y con 4 marcos NRU (13) queda a un fallo del Óptimo (12): el orden "
-             "de los algoritmos depende de la memoria disponible.")
-    figura(doc, os.path.join(g, "g4_belady.png"), "Anomalía de Belády con la cadena del material del curso")
-    par(doc, "FIFO, Reloj, MFU, Reloj Mejorado y WSClock empeoran de 9 a 10 fallos al pasar de 3 a 4 marcos. "
-             "Todos eligen la víctima, en algún momento, por orden de llegada o con un puntero circular. LRU y el "
-             "Óptimo, por ser algoritmos de pila, nunca presentaron la anomalía, ni en esta cadena ni en 600 "
-             "cadenas aleatorias.")
-
-    titulo(doc, "2.5 Validación del simulador", 2)
-    par(doc, "La exactitud de los resultados se verificó con el script `tests/validar.py` (`make validar`), "
-             "que compara el simulador con una implementación de referencia escrita por separado en Python a "
-             "partir de las reglas del experimento. Se superaron **67 de 67 pruebas** (Tabla siguiente).")
-    rotulo_tabla(doc, "Grupos de pruebas de validación")
-    grupos = [
-        ("V1", "Compilación con gcc sin errores ni advertencias", "2"),
-        ("V2", "Valores de control (FIFO 25, OPT 15, LRU 22, Reloj 24) y Belády del Tema 3", "6"),
-        ("V3", "Traza idéntica a la referencia con 1 a 8 marcos (12 algoritmos)", "8"),
-        ("V4", "Invariantes en cada traza (p. ej., fallos ≥ Óptimo, un fallo cambia un solo marco)", "8"),
-        ("V5", "Casos de borde (1 marco, sin repeticiones, máximos, etc.)", "13"),
-        ("V6", "400 cadenas aleatorias con lecturas y escrituras", "1"),
-        ("V7", "Propiedad de pila (LRU, OPT) y anomalía de Belády", "4"),
-        ("V8", "Entradas inválidas en la línea de comandos", "18"),
-        ("V9", "Reproducibilidad y exportación CSV", "3"),
-        ("V10", "Motor WebAssembly del simulador web idéntico a la referencia (397 casos)", "4"),
-    ]
-    tabla(doc, ["Grupo", "Qué se comprueba", "Pruebas"], [list(g_) for g_ in grupos] + [["", "**Total**", "**67/67**"]],
-          [800, 7300, 1260], tam=10, alinear=[c, None, c])
-    nota(doc, "Salida completa en `docs/evidencias/validacion_paso07.txt` del repositorio.")
-
-    titulo(doc, "2.6 Simulador web interactivo", 2)
-    par(doc, "Además del programa de consola, el mismo código C se compiló a **WebAssembly** con Emscripten "
-             "para ofrecer un simulador interactivo en el navegador. La página no reimplementa los algoritmos: "
-             "llama a las funciones de `src/web/api_web.c`, que ejecutan los 12 módulos en C sin cambios. La "
-             "prueba V10 comprobó que sus trazas son idénticas a las del programa de consola.")
-    vinetas(doc, [
-        "**Paso a paso:** animación con reproducir/pausa y velocidad, matriz de marcos con la página cargada, "
-        "el acierto y la víctima, explicación en lenguaje natural y variables internas del algoritmo.",
-        "**Comparación:** gráfico y tabla de los 12 algoritmos con la misma entrada, y prueba de la anomalía de "
-        "Belády con un marco adicional.",
-        "**Entradas libres:** cadena de hasta 64 referencias, patrón de lecturas/escrituras y de 1 a 8 marcos.",
-        "**Uso:** `make web` compila el motor y `make web-servir` lo abre en http://localhost:8000.",
-    ])
-    figura(doc, os.path.join(RAIZ, "docs", "img", "web_paso_a_paso.png"),
-           "Simulador web: algoritmo del Reloj en el paso 18", ancho=6.3,
-           texto_nota="Captura del simulador web del proyecto (motor C compilado a WebAssembly).")
-    figura(doc, os.path.join(RAIZ, "docs", "img", "web_comparar.png"),
-           "Simulador web: comparación de los 12 algoritmos y prueba de Belády", ancho=5.6,
-           texto_nota="Captura del simulador web del proyecto.")
+    figura(doc, os.path.join(g, "g1_fallos_por_algoritmo.png"), "Fallos de página por algoritmo (3 marcos)",
+           ancho=4.6)
+    par(doc, "El Óptimo marca el mínimo (15). LFU y WSClock son los mejores algoritmos realizables (19) y "
+             "FIFO y MFU los peores (25).")
+    figura(doc, os.path.join(g, "g4_belady.png"), "Anomalía de Belády con la cadena 1,2,3,4,1,2,5,1,2,3,4,5",
+           ancho=4.6)
+    par(doc, "Cinco algoritmos empeoran al pasar de 3 a 4 marcos; LRU y el Óptimo, algoritmos de pila, no.")
 
 
 def cierre(doc):
     titulo(doc, "CONCLUSIONES", 1)
     vinetas(doc, C.CONCLUSIONES)
-    titulo(doc, "RECOMENDACIONES", 2).paragraph_format.page_break_before = False
+    titulo(doc, "RECOMENDACIONES", 2)
     vinetas(doc, C.RECOMENDACIONES)
-    titulo(doc, "BIBLIOGRAFÍA", 1)
+    titulo(doc, "BIBLIOGRAFÍA", 2)
     for ref in C.BIBLIOGRAFIA:
         texto_con_formato(doc.add_paragraph(style="Bibliografía"), ref)
 
 
 def anexos(doc):
-    titulo(doc, "ANEXOS", 1)
-    titulo(doc, "Anexo A. Código fuente común del simulador", 2)
-    par(doc, "Los módulos de cada algoritmo (Capítulo II) se compilan junto con los siguientes archivos. El "
-             "proyecto completo compila con `make` en Linux sin advertencias.")
-    for nombre in ("parametros.h", "parametros.c", "comun.h", "comun.c", "algoritmos.h", "algoritmos.c",
-                   "main.c", "Makefile", os.path.join("web", "api_web.c")):
-        titulo(doc, f"src/{nombre.replace(os.sep, '/')}", 3)
-        bloque_codigo(doc, leer(os.path.join(SRC, nombre)))
-
-    titulo(doc, "Anexo B. Compilación y ejecución en Linux", 2)
+    titulo(doc, "ANEXO: COMPILACIÓN Y EJECUCIÓN EN LINUX", 2)
+    par(doc, "Los 12 módulos se compilan junto con los archivos comunes del proyecto (`parametros`, `comun`, "
+             "`algoritmos`, `main.c` y `Makefile`), disponibles en el repositorio:")
     bloque_codigo(doc, "\n".join([
         "$ cd src",
-        "$ make                       # compila con gcc -std=c11 -Wall -Wextra -pedantic -O2",
-        "$ ../build/simulador         # traza de los 12 algoritmos + tabla comparativa",
-        "$ ../build/simulador -a 2    # solo el Optimo",
-        "$ ../build/simulador -r -m 4 -c 1,2,3,4,1,2,5,1,2,3,4,5   # Belady con 4 marcos",
-        "$ ../build/simulador -o resumen.csv -t trazas.csv          # exportar CSV",
-        "$ make validar               # 67 pruebas automaticas",
-        "$ make web && make web-servir   # simulador web en http://localhost:8000"]))
-    par(doc, "Extracto de la tabla comparativa que imprime el simulador en la terminal de Linux:")
-    salida = leer(os.path.join(RAIZ, "resultados", "salida_consola.txt"))
-    pos = salida.index("TABLA COMPARATIVA")
-    inicio = salida.rfind("\n", 0, salida.rfind("\n", 0, pos)) + 1   # línea de '=' anterior al título
-    bloque_codigo(doc, salida[inicio:])
+        "$ make                    # gcc -std=c11 -Wall -Wextra -pedantic -O2 (0 advertencias)",
+        "$ ../build/simulador      # traza de los 12 algoritmos + tabla comparativa",
+        "$ ../build/simulador -a 2 # solo un algoritmo (1..12)",
+        "$ make validar            # 67 pruebas automaticas"]))
 
 
 # =====================================================================
 def main():
     for ruta in ("resultados/resumen_3marcos.csv", "resultados/trazas_3marcos.csv",
-                 "graficas/g1_fallos_por_algoritmo.png", "graficas/g5_cronograma_gantt.png",
-                 "docs/img/web_paso_a_paso.png"):
+                 "graficas/g1_fallos_por_algoritmo.png", "graficas/g4_belady.png"):
         if not os.path.exists(os.path.join(RAIZ, ruta)):
             sys.exit(f"Falta {ruta}: ejecuta antes make resultados, scripts/graficas.py y el Paso 7.")
     with open(os.path.join(RAIZ, "resultados", "trazas_3marcos.csv"), encoding="utf-8") as f:
