@@ -24,7 +24,7 @@ from docx import Document
 from docx.enum.section import WD_SECTION
 from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.table import WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_COLOR_INDEX
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor, Twips
@@ -508,6 +508,14 @@ def capitulo1(doc):
               + ". Duración total: 21 días hábiles.")
 
 
+def cita_parentetica(cita):
+    """'Tanenbaum y Bos (2015)' -> 'Tanenbaum & Bos, 2015' (APA 7, cita entre paréntesis)."""
+    m = re.fullmatch(r"(.+?) \((\d{4})\)", cita.strip())
+    if not m:
+        return cita
+    return f"{m.group(1).replace(' y ', ' & ')}, {m.group(2)}"
+
+
 def matriz_traza(doc, filas_csv):
     """Traza compacta 3×30: filas Ref, Op, M1–M3 y Res; una columna por paso."""
     n = len(filas_csv)
@@ -544,14 +552,12 @@ def capitulo2(doc, trazas, resumen):
     titulo(doc, "CAPÍTULO II: MARCO TEÓRICO Y MODELADO DE LOS ALGORITMOS", 1)
     titulo(doc, "2.1 Antecedentes internacionales", 2)
     for ref, cuerpo, rel in C.ANT_INTERNACIONALES:
-        par(doc, f"{ref} {cuerpo} **Relación con el proyecto:** {rel}")
+        par(doc, f"{ref} {cuerpo} **Relación con el proyecto:** {rel[0].lower() + rel[1:]}")
     titulo(doc, "2.2 Antecedentes nacionales", 2)
     for ref, cuerpo, rel in C.ANT_NACIONALES:
-        par(doc, f"{ref} {cuerpo} **Relación con el proyecto:** {rel}")
-    p = par(doc, "**[COMPLETAR – Antecedente nacional 2]:** agregar una tesis o artículo peruano verificado "
-                 "(repositorio de la UNSAAC, ALICIA/CONCYTEC o RENATI) y su referencia en la Bibliografía.")
-    for r in p.runs:
-        r.font.highlight_color = WD_COLOR_INDEX.YELLOW
+        par(doc, f"{ref} {cuerpo} **Relación con el proyecto:** {rel[0].lower() + rel[1:]}")
+    # Para agregar otro antecedente nacional (verificado), añadirlo a C.ANT_NACIONALES
+    # y su referencia a C.BIBLIOGRAFIA.
 
     titulo(doc, "2.3 Temas relacionados al proyecto con modelado de cada algoritmo", 2)
     titulo(doc, "2.3.1 Condiciones del experimento", 3)
@@ -574,7 +580,7 @@ def capitulo2(doc, trazas, resumen):
         titulo(doc, f"2.3.{n} Algoritmo {aid}: {nombre}", 3)
         par(doc, f"*Responsable: Integrante {integrante} – {nom_int}.*")
         par(doc, f"**Principio de operación.** {principio} **Ventaja:** {ventaja} **Desventaja:** "
-                 f"{desventaja} **Anomalía de Belády:** {belady} ({cita}).")
+                 f"{desventaja} **Anomalía de Belády:** {belady} ({cita_parentetica(cita)}).")
         r = res[aid]
         rotulo_tabla(doc, f"Traza de {corto} con 3 marcos y 30 referencias")
         matriz_traza(doc, por_alg[aid])

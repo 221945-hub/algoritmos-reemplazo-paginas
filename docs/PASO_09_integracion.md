@@ -98,12 +98,16 @@ El script crea `entrega/Proyecto_SO_Reemplazo_de_Paginas.zip` **solo con los arc
 | ✅ | Simulador web con el mismo código C |
 | ✅ | Informe de 28 páginas con la estructura del enunciado y los 5 integrantes |
 | ✅ | Material de análisis fuera de GitHub |
-| ✍️ | **A cargo del grupo:** códigos universitarios de los integrantes 2 a 5, segundo antecedente nacional (resaltado en amarillo) y verificación de los DOI de la bibliografía |
+| ✅ | Verificación final automática del PDF: sin marcadores pendientes, citas APA, 5 integrantes, responsables y resultados iguales al CSV, índice completo y toda cita en la bibliografía |
+| ✍️ | **A cargo del grupo (opcional):** códigos universitarios de los integrantes 2 a 5, un segundo antecedente nacional y la verificación de los DOI de la bibliografía |
 
 ## 9.7 Problemas encontrados y soluciones
 
 | Problema | Solución |
 |---|---|
+| Revisión final del texto del informe: citas como «(Silberschatz et al. (2018))» | Se convierten al formato APA 7 entre paréntesis: «(Silberschatz et al., 2018)», «(Tanenbaum & Bos, 2015)» |
+| Mayúscula después de «Relación con el proyecto:» | Se pasa a minúscula, como corresponde en español |
+| Nota amarilla «[COMPLETAR – Antecedente nacional 2]» visible en el informe | Se quitó del informe. Para agregar otro antecedente: `ANT_NACIONALES` y `BIBLIOGRAFIA` en `contenido_informe.py` |
 | Los nombres no cabían en la columna «Responsable» (12 caracteres) | Columna ampliada a 18 y separadores a 96 caracteres |
 | `generar_informe.py` falló con *Permission denied* | El `.docx` estaba abierto en Word. Hay que cerrarlo antes de regenerar el informe |
 | `actualizar_indice.ps1` quedó colgado mientras el documento seguía abierto | Se cerró solo la instancia oculta de Word (`/Automation`) y se repitió con el archivo cerrado |

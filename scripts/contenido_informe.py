@@ -154,7 +154,7 @@ ALGORITMOS = [
      "antigua.",
      "protege las páginas muy usadas.", "una página antigua muy usada puede quedarse sin necesitarse.",
      "posible (se halló un caso: 9 → 11).",
-     "La página 0, la más usada y escrita, no es expulsada desde el paso 15.", "Silberschatz et al. (2018)"),
+     "La página 0, la más usada y escrita, entra en el paso 2 y nunca es expulsada.", "Silberschatz et al. (2018)"),
     (7, "mfu", "MFU (Most Frequently Used)", 1,
      "Expulsa la página con **mayor contador de usos**, suponiendo que la de contador bajo acaba de llegar y "
      "aún se usará. Empate: la más antigua.",
@@ -185,7 +185,7 @@ ALGORITMOS = [
     (12, "aleatorio", "Reemplazo Aleatorio (Random)", 3,
      "Elige la víctima al azar con un generador congruencial lineal propio, "
      "x = (1103515245·x + 12345) mod 2³¹, semilla 42, para que el resultado sea reproducible.",
-     "costo mínimo.", "resultado variable según la semilla.", "**sí** (posible en cualquier caso).",
+     "costo mínimo.", "resultado variable según la semilla.", "**sí** (se halló un caso en cadenas aleatorias).",
      "Con la semilla 42 obtiene 20 fallos; con otra semilla el resultado cambia.", "Belady (1966)"),
 ]
 

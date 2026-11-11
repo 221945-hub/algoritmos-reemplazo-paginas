@@ -38,7 +38,7 @@ powershell -ExecutionPolicy Bypass -File scripts\actualizar_indice.ps1  # rellen
 | **Introducción** | Evolución del tema, problema y propuesta (un párrafo cada uno) | 1 |
 | **Índice** | Automático, 3 niveles, en una página | 2 |
 | **Capítulo I** | 1.1 Planteamiento (1.1.1 descripción y 1.1.2 identificación), 1.2 Justificación, 1.3 Limitaciones, 1.4 Delimitaciones, 1.5 Metodología y 1.5.1 Cronograma (tabla tipo MS Project) | 3–4 |
-| **Capítulo II** | 2.1 Antecedentes internacionales (2), 2.2 Antecedentes nacionales (1 verificado + 1 por completar), 2.3 Condiciones y **12 algoritmos** (responsable, principio de operación, ventaja, desventaja y Belády; **traza 3×30**; resultado; **código C del módulo**), 2.4 Comparación (tabla + 2 gráficas) | 5–25 |
+| **Capítulo II** | 2.1 Antecedentes internacionales (2), 2.2 Antecedentes nacionales (1 verificado), 2.3 Condiciones y **12 algoritmos** (responsable, principio de operación, ventaja, desventaja y Belády; **traza 3×30**; resultado; **código C del módulo**), 2.4 Comparación (tabla + 2 gráficas) | 5–25 |
 | **Conclusiones, recomendaciones y bibliografía** | 4 conclusiones, 2 recomendaciones y 9 referencias APA 7 | 26–27 |
 | **Anexo** | Compilación y ejecución en Linux | 27 |
 
@@ -73,7 +73,7 @@ powershell -ExecutionPolicy Bypass -File scripts\actualizar_indice.ps1  # rellen
 ## 8.6 Pendientes para los integrantes
 
 1. ~~Nombres de los integrantes~~ ✅ completados en el Paso 9 (faltan los códigos de los integrantes 2 a 5).
-2. **Antecedente nacional 2** (resaltado en amarillo en 2.2), con una fuente peruana verificada.
+2. **Antecedente nacional 2** (opcional): la nota amarilla se quitó en el Paso 9. Si el grupo encuentra una fuente peruana verificada, se agrega en `ANT_NACIONALES`.
 3. **Revisar la bibliografía:** solo Ruiz y Raffo (2003) se verificó en línea; conviene confirmar los DOI de las demás.
 4. Si se edita el Word a mano: clic derecho en el índice → **Actualizar campo**.
 
