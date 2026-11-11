@@ -15,9 +15,14 @@ Grupos de pruebas:
   V7  Anomalía de Belády y propiedad de pila
   V8  Línea de comandos: errores y códigos de salida
   V9  Reproducibilidad y exportación CSV
+  V10 Motor WebAssembly (web/motor.wasm) == referencia (Paso 7; se omite si
+      no existen Node.js o web/motor.js)
 Termina con código 0 si todo pasa, 1 si alguna prueba falla.
 """
+import glob
+import json
 import os
+import shutil
 import random
 import re
 import subprocess
@@ -145,6 +150,57 @@ def invariantes(refs, m, c, w=None):
             if errores:
                 break
     return errores
+
+
+def buscar_node():
+    """Node.js del sistema o el que instala Emscripten en ~/emsdk."""
+    node = shutil.which("node")
+    if node:
+        return node
+    candidatos = sorted(glob.glob(os.path.expanduser("~/emsdk/node/*/bin/node")))
+    return candidatos[-1] if candidatos else None
+
+
+def validar_web():
+    """V10: el mismo código C compilado a WebAssembly debe dar trazas idénticas."""
+    print("\nV10. Motor WebAssembly del simulador web")
+    motor = os.path.join(ref.RAIZ, "web", "motor.js")
+    node = buscar_node()
+    if not node or not os.path.exists(motor):
+        falta = "Node.js" if not node else "web/motor.js (make web)"
+        print(f"  [OMITIDO] falta {falta}; estas pruebas no se cuentan")
+        return
+    rng = random.Random(77)
+    casos = [{"refs": ref.REFS, "w": ref.ESCRITURA, "m": m} for m in range(1, ref.MAX_MARCOS + 1)]
+    casos.append({"refs": [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5], "w": [0] * 12, "m": 4})
+    n_azar = 40 if RAPIDO else 300
+    for _ in range(n_azar):
+        refs, w, m = cadena_aleatoria(rng)
+        casos.append({"refs": refs, "w": w, "m": m})
+    p = subprocess.run([node, os.path.join(ref.RAIZ, "tests", "web_volcado.js")],
+                       input=json.dumps(casos), capture_output=True, text=True)
+    if not prueba("V10", "el motor WebAssembly carga y responde en Node.js",
+                  p.returncode == 0, p.stderr.strip()[-300:]):
+        return
+    salida = json.loads(p.stdout)
+    difs = []
+    for caso, res_web in zip(casos, salida):
+        for n, (nombre, f) in enumerate(ref.ALGORITMOS):
+            s = f(caso["refs"], caso["w"], caso["m"])
+            w = res_web[n]
+            traza_web = [(tuple(mc), x) for mc, x in w["trace"]] if w else None
+            py_fallos = sum(1 for _, x in s.trace if x == "F")
+            if (traza_web != s.trace or w["fallos"] != py_fallos or w["esc"] != s.esc
+                    or w["aciertos"] != len(caso["refs"]) - py_fallos):
+                difs.append(f"{nombre} m={caso['m']} refs={lista(caso['refs'])}")
+    oficiales = len(ref.ALGORITMOS) * ref.MAX_MARCOS
+    prueba("V10", f"cadena oficial con 1..{ref.MAX_MARCOS} marcos: {oficiales} trazas identicas",
+           not any("refs=" + lista(ref.REFS) in d for d in difs))
+    prueba("V10", f"Belady (Tema 3) y {n_azar} cadenas al azar: trazas identicas",
+           not difs, difs[0] if difs else "")
+    w3 = salida[2]
+    prueba("V10", "valores de control desde WebAssembly (FIFO 25, OPT 15, LRU 22, Reloj 24)",
+           [w3[i]["fallos"] for i in range(4)] == [25, 15, 22, 24])
 
 
 def cadena_aleatoria(rng):
@@ -319,6 +375,9 @@ def main():
         prueba("V9", "CSV con 12 filas y valores iguales a la traza", ok)
         code, _, err = ejecutar(["-r", "-o", os.path.join(d, "no_existe", "x.csv")])
         prueba("V9", "CSV a carpeta inexistente -> codigo 1 y error", code == 1 and err.strip() != "")
+
+    # ---------------- V10 ----------------
+    validar_web()
 
     # ---------------- Resumen ----------------
     print("\nCurva de fallos con la cadena oficial (marcos 1..8):")

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulador de reemplazo de páginas</title>
+  <meta name="description" content="Simulador interactivo de 12 algoritmos de reemplazo de páginas. Motor escrito en C y compilado a WebAssembly. Proyecto de Sistemas Operativos, UNSAAC 2026-II.">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div>
+      <h1>Simulador de reemplazo de páginas</h1>
+      <p class="sub">12 algoritmos · motor en <strong>lenguaje C</strong> compilado a <strong>WebAssembly</strong> · Sistemas Operativos, UNSAAC 2026-II</p>
+    </div>
+    <div class="cabecera-der">
+      <button type="button" id="b-tema" title="Cambiar tema claro/oscuro">◐ Tema</button>
+      <span id="estado-motor" class="insignia">Cargando motor C…</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= Configuración ================= -->
+    <section class="panel" aria-labelledby="t-config">
+      <h2 id="t-config">Configuración</h2>
+      <div class="presets" role="group" aria-label="Cadenas predefinidas">
+        <span class="etiqueta">Cargar:</span>
+        <button type="button" data-preset="oficial">Cadena oficial (30 refs)</button>
+        <button type="button" data-preset="belady">Belády (Tema 3)</button>
+        <button type="button" data-preset="aleatoria">Aleatoria</button>
+      </div>
+
+      <div class="campos">
+        <label class="campo ancho">
+          <span>Cadena de referencias <small>(números separados por comas o espacios, máx. <span id="max-refs">64</span>)</small></span>
+          <input id="in-cadena" type="text" autocomplete="off" spellcheck="false">
+        </label>
+        <label class="campo ancho">
+          <span>Operación por referencia <small>(R = lectura, W = escritura; también puedes hacer clic en la fila «Op» de la tabla)</small></span>
+          <input id="in-ops" type="text" autocomplete="off" spellcheck="false">
+        </label>
+        <label class="campo">
+          <span>Marcos</span>
+          <select id="in-marcos"></select>
+        </label>
+        <label class="campo">
+          <span>Algoritmo</span>
+          <select id="in-algoritmo"></select>
+        </label>
+      </div>
+      <p id="error-entrada" class="error" role="alert" hidden></p>
+    </section>
+
+    <!-- ================= Pestañas ================= -->
+    <nav class="pestanas" role="tablist">
+      <button type="button" role="tab" id="tab-paso" aria-selected="true" aria-controls="vista-paso">Paso a paso</button>
+      <button type="button" role="tab" id="tab-comparar" aria-selected="false" aria-controls="vista-comparar">Comparar los 12 algoritmos</button>
+    </nav>
+
+    <!-- ================= Vista paso a paso ================= -->
+    <section id="vista-paso" class="panel" role="tabpanel" aria-labelledby="tab-paso">
+      <div class="controles" role="group" aria-label="Controles de reproducción">
+        <button type="button" id="b-inicio" title="Inicio (Inicio)">⏮</button>
+        <button type="button" id="b-ant" title="Paso anterior (←)">◀</button>
+        <button type="button" id="b-play" class="primario" title="Reproducir / pausar (espacio)">▶ Reproducir</button>
+        <button type="button" id="b-sig" title="Paso siguiente (→)">▶▏</button>
+        <button type="button" id="b-fin" title="Final (Fin)">⏭</button>
+        <label class="velocidad">Velocidad
+          <input id="in-velocidad" type="range" min="1" max="10" value="5">
+        </label>
+        <label class="check"><input id="in-revelar" type="checkbox"> Mostrar toda la traza</label>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><span class="kpi-t">Paso</span><span id="k-paso" class="kpi-v">0 / 0</span></div>
+        <div class="kpi"><span class="kpi-t">Fallos</span><span id="k-fallos" class="kpi-v">0</span></div>
+        <div class="kpi"><span class="kpi-t">Aciertos</span><span id="k-aciertos" class="kpi-v">0</span></div>
+        <div class="kpi"><span class="kpi-t">Tasa de fallos</span><span id="k-tasa" class="kpi-v">—</span></div>
+        <div class="kpi"><span class="kpi-t">Escrituras a disco (total)</span><span id="k-escr" class="kpi-v">—</span></div>
+      </div>
+
+      <div class="explicacion" aria-live="polite">
+        <p id="txt-explicacion">Presiona ▶ para comenzar.</p>
+        <p class="aux"><span class="etiqueta">Variables internas:</span> <code id="txt-aux">—</code></p>
+      </div>
+
+      <div class="tabla-scroll">
+        <table id="matriz" class="matriz" aria-label="Traza paso a paso"></table>
+      </div>
+      <p class="leyenda">
+        <span class="mk mk-cargada"></span> página cargada (fallo)
+        <span class="mk mk-acierto"></span> página encontrada (acierto)
+        <span class="mk mk-actual"></span> paso actual
+        · <strong>F</strong> fallo · <strong>H</strong> acierto · «Sale» = víctima expulsada
+      </p>
+    </section>
+
+    <!-- ================= Vista comparar ================= -->
+    <section id="vista-comparar" class="panel" role="tabpanel" aria-labelledby="tab-comparar" hidden>
+      <div class="dos-col">
+        <div>
+          <h3>Fallos por algoritmo</h3>
+          <p class="nota">Misma cadena, operaciones y marcos para los 12. En gris, el Óptimo (mínimo teórico, no realizable). Haz clic en una barra o fila para verla paso a paso.</p>
+          <div id="grafico" class="grafico" role="img" aria-label="Gráfico de barras de fallos por algoritmo"></div>
+        </div>
+        <div>
+          <h3>Tabla comparativa</h3>
+          <div class="tabla-scroll">
+            <table id="tabla-comp" class="tabla">
+              <thead><tr>
+                <th data-col="id">#</th><th data-col="nombre">Algoritmo</th>
+                <th data-col="fallos" class="num">Fallos ▲</th><th data-col="aciertos" class="num">Aciertos</th>
+                <th data-col="tasa" class="num">% fallos</th><th data-col="escr" class="num">Escrituras</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <h3>Anomalía de Belády: ¿qué pasa con un marco más?</h3>
+      <p class="nota">Compara cada algoritmo con <strong id="txt-m">3</strong> y <strong id="txt-m1">4</strong> marcos sobre la cadena actual. Si los fallos <em>suben</em>, hay anomalía. Prueba con «Belády (Tema 3)».</p>
+      <div class="tabla-scroll">
+        <table id="tabla-belady" class="tabla"><thead><tr>
+          <th>Algoritmo</th><th class="num" id="th-m">3 marcos</th><th class="num" id="th-m1">4 marcos</th><th>Resultado</th>
+        </tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    Proyecto de Sistemas Operativos · Escuela Profesional de Ingeniería Informática y de Sistemas · UNSAAC ·
+    Los resultados los calcula el mismo código C del simulador de consola, verificado con pruebas automáticas (<code>make validar</code>).
+  </footer>
+
+  <script src="motor.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

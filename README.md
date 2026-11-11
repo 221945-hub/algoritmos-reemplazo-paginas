@@ -16,8 +16,9 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 | 4 | Implementar los 12 algoritmos | ✅ | [docs/PASO_04_algoritmos.md](docs/PASO_04_algoritmos.md) |
 | 5 | Validar resultados | ✅ | [docs/PASO_05_validacion.md](docs/PASO_05_validacion.md) |
 | 6 | Generar trazas, CSV y gráficas | ✅ | [docs/PASO_06_resultados.md](docs/PASO_06_resultados.md) |
-| 7 | Redactar el informe | ⏳ | — |
-| 8 | Integración final y entrega | ⏳ | — |
+| 7 | Simulador web interactivo (C → WebAssembly) | ✅ | [docs/PASO_07_simulador_web.md](docs/PASO_07_simulador_web.md) |
+| 8 | Informe en Word | ⏳ | — |
+| 9 | Integración final y entrega | ⏳ | — |
 
 ## Estructura del repositorio
 
@@ -27,7 +28,8 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 ├── tests/       Validación: referencia.py y validar.py
 ├── scripts/     generar_resultados.sh y graficas.py
 ├── resultados/  Trazas (.txt) y métricas (.csv) generadas por el simulador
-└── graficas/    Gráficas comparativas (PNG y SVG)
+├── graficas/    Gráficas comparativas (PNG y SVG)
+└── web/         Simulador web: motor C compilado a WebAssembly + interfaz
 ```
 
 ## Compilar (Linux / WSL)
@@ -38,12 +40,18 @@ make                  # compila todo en ../build/
 make run              # traza de los 12 algoritmos + tabla comparativa
 ../build/simulador -h # ver todas las opciones (-a, -r, -m, -c, -w, -o, -t, -l)
 make test             # prueba de entorno y parámetros
-make validar          # validación formal: 63 pruebas (requiere python3)
+make validar          # validación formal: 67 pruebas (requiere python3)
 make resultados       # regenera resultados/ (trazas y CSV)
+make web              # compila el motor C a WebAssembly (requiere Emscripten)
+make web-servir       # simulador web en http://localhost:8000
 make clean
 ```
 
 Gráficas (requiere matplotlib), desde la raíz: `python scripts/graficas.py`
+
+## Simulador web
+
+![Simulador web](docs/img/web_paso_a_paso.png)
 
 ## Resultado principal (3 marcos, 30 referencias)
 
