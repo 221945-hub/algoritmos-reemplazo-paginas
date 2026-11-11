@@ -17,7 +17,7 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 | 5 | Validar resultados | ✅ | [docs/PASO_05_validacion.md](docs/PASO_05_validacion.md) |
 | 6 | Generar trazas, CSV y gráficas | ✅ | [docs/PASO_06_resultados.md](docs/PASO_06_resultados.md) |
 | 7 | Simulador web interactivo (C → WebAssembly) | ✅ | [docs/PASO_07_simulador_web.md](docs/PASO_07_simulador_web.md) |
-| 8 | Informe en Word | ⏳ | — |
+| 8 | Informe en Word | ✅ | [docs/PASO_08_informe.md](docs/PASO_08_informe.md) |
 | 9 | Integración final y entrega | ⏳ | — |
 
 ## Estructura del repositorio
@@ -26,10 +26,11 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 ├── docs/        Documentación de cada paso (+ evidencias/)
 ├── src/         Código fuente en C (+ Makefile)
 ├── tests/       Validación: referencia.py y validar.py
-├── scripts/     generar_resultados.sh y graficas.py
+├── scripts/     generar_resultados.sh, graficas.py y generar_informe.py
 ├── resultados/  Trazas (.txt) y métricas (.csv) generadas por el simulador
 ├── graficas/    Gráficas comparativas (PNG y SVG)
-└── web/         Simulador web: motor C compilado a WebAssembly + interfaz
+├── web/         Simulador web: motor C compilado a WebAssembly + interfaz
+└── informe/     Informe final en Word (.docx) y PDF
 ```
 
 ## Compilar (Linux / WSL)
@@ -48,6 +49,10 @@ make clean
 ```
 
 Gráficas (requiere matplotlib), desde la raíz: `python scripts/graficas.py`
+
+## Informe
+
+[informe/Informe_Proyecto_SO_Reemplazo_de_Paginas.docx](informe/Informe_Proyecto_SO_Reemplazo_de_Paginas.docx) (73 páginas; también en PDF). Se regenera con `python scripts/generar_informe.py`.
 
 ## Simulador web
 

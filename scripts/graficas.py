@@ -220,7 +220,57 @@ def g4_belady(belady):
     guardar(fig, "g4_belady")
 
 
+# ---------------------------------------------------------------- G5
+def g5_gantt():
+    """Diagrama de Gantt del cronograma (scripts/contenido_informe.py)."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from contenido_informe import CRONOGRAMA
+    import re as _re
+
+    def predecesoras(txt):
+        ids = []
+        for parte in _re.split(r"\s*,\s*", txt):
+            m = _re.match(r"(\d+)\s*[–-]\s*(\d+)$", parte)
+            if m:
+                ids += list(range(int(m.group(1)), int(m.group(2)) + 1))
+            elif parte.isdigit():
+                ids.append(int(parte))
+        return ids
+
+    fin, filas = {}, []
+    for tid, fase, tarea, dur, rec, pred, _ in CRONOGRAMA:
+        inicio = max([fin[p] for p in predecesoras(pred)], default=0)
+        fin[int(tid)] = inicio + dur
+        filas.append((int(tid), fase, tarea, inicio, dur, rec))
+    fases = list(dict.fromkeys(f for _, f, *_ in filas))
+    colores = dict(zip(fases, [AZUL, NARANJA, "#1baf7a", "#eda100", "#6250d6"]))
+
+    fig, ax = plt.subplots(figsize=(11, 6.4))
+    fig.subplots_adjust(left=0.40, right=0.97, top=0.84, bottom=0.10)
+    for i, (tid, fase, tarea, ini, dur, rec) in enumerate(reversed(filas)):
+        ax.barh(i, dur, left=ini, height=0.6, color=colores[fase], edgecolor=SUPERFICIE, linewidth=2)
+        ax.text(ini + dur + 0.2, i, rec, va="center", fontsize=8, color=TEXTO_2)
+    ax.set_yticks(range(len(filas)),
+                  [f"{t}. {tarea[:46] + ('…' if len(tarea) > 46 else '')}" for t, _, tarea, *_ in reversed(filas)],
+                  fontsize=8.5)
+    total = max(fin.values())
+    ax.set_xlim(0, total + 6)
+    ax.set_xticks(range(0, total + 1, 5))
+    ax.set_xlabel("Días hábiles desde el inicio del proyecto")
+    grilla_x(ax)
+    leyenda = [Line2D([], [], color=colores[f], linewidth=8, label=f) for f in fases]
+    ax.legend(handles=leyenda, loc="lower center", bbox_to_anchor=(0.4, 1.0), ncol=5,
+              frameon=False, fontsize=8.5, handlelength=1.0)
+    titulo(fig, "Cronograma del proyecto (diagrama de Gantt)",
+           f"16 tareas en 5 fases · duración total: {total} días hábiles · "
+           "el inicio de cada tarea depende de sus predecesoras")
+    guardar(fig, "g5_cronograma_gantt")
+
+
 def main():
+    if "--solo-gantt" in sys.argv:
+        g5_gantt()
+        return
     resumen = leer("resumen_3marcos.csv")
     curva = leer("curva_marcos.csv")
     belady = leer("belady_tema3.csv")
@@ -229,6 +279,7 @@ def main():
     g2_costo(resumen)
     g3_curva(curva)
     g4_belady(belady)
+    g5_gantt()
 
 
 if __name__ == "__main__":
