@@ -6,7 +6,7 @@
  Operacion:       R W R R W R R W W R W R R R W R R R W R W R W W R R R W W R 
 
 ====================================================================================================
- ALGORITMO 1: FIFO   |   Responsable: Integrante 1
+ ALGORITMO 1: FIFO   |   Responsable: Elvis Suca
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -46,7 +46,7 @@
  Fallos: 25 | Aciertos: 5 | Tasa de fallos: 83.33 % | Tasa de aciertos: 16.67 % | Escrituras a disco: 9
 
 ====================================================================================================
- ALGORITMO 2: Optimo (OPT)   |   Responsable: Integrante 1
+ ALGORITMO 2: Optimo (OPT)   |   Responsable: Jhamil Huahualuque
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -86,7 +86,7 @@
  Fallos: 15 | Aciertos: 15 | Tasa de fallos: 50.00 % | Tasa de aciertos: 50.00 % | Escrituras a disco: 6
 
 ====================================================================================================
- ALGORITMO 3: LRU   |   Responsable: Integrante 2
+ ALGORITMO 3: LRU   |   Responsable: Jhamil Huahualuque
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -126,7 +126,7 @@
  Fallos: 22 | Aciertos: 8 | Tasa de fallos: 73.33 % | Tasa de aciertos: 26.67 % | Escrituras a disco: 8
 
 ====================================================================================================
- ALGORITMO 4: Reloj (Clock)   |   Responsable: Integrante 2
+ ALGORITMO 4: Reloj (Clock)   |   Responsable: Haider Carpio
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -166,7 +166,7 @@
  Fallos: 24 | Aciertos: 6 | Tasa de fallos: 80.00 % | Tasa de aciertos: 20.00 % | Escrituras a disco: 9
 
 ====================================================================================================
- ALGORITMO 5: NRU   |   Responsable: Integrante 3
+ ALGORITMO 5: NRU   |   Responsable: Angel Alvarez
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -206,7 +206,7 @@
  Fallos: 21 | Aciertos: 9 | Tasa de fallos: 70.00 % | Tasa de aciertos: 30.00 % | Escrituras a disco: 7
 
 ====================================================================================================
- ALGORITMO 6: LFU   |   Responsable: Integrante 3
+ ALGORITMO 6: LFU   |   Responsable: Elvis Suca
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -246,7 +246,7 @@
  Fallos: 19 | Aciertos: 11 | Tasa de fallos: 63.33 % | Tasa de aciertos: 36.67 % | Escrituras a disco: 4
 
 ====================================================================================================
- ALGORITMO 7: MFU   |   Responsable: Integrante 4
+ ALGORITMO 7: MFU   |   Responsable: Angel Alvarez
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -286,7 +286,7 @@
  Fallos: 25 | Aciertos: 5 | Tasa de fallos: 83.33 % | Tasa de aciertos: 16.67 % | Escrituras a disco: 9
 
 ====================================================================================================
- ALGORITMO 8: Reloj Mejorado   |   Responsable: Integrante 4
+ ALGORITMO 8: Reloj Mejorado   |   Responsable: Marcus Meza
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -326,7 +326,7 @@
  Fallos: 21 | Aciertos: 9 | Tasa de fallos: 70.00 % | Tasa de aciertos: 30.00 % | Escrituras a disco: 6
 
 ====================================================================================================
- ALGORITMO 9: Aging   |   Responsable: Integrante 5
+ ALGORITMO 9: Aging   |   Responsable: Marcus Meza
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -366,7 +366,7 @@
  Fallos: 22 | Aciertos: 8 | Tasa de fallos: 73.33 % | Tasa de aciertos: 26.67 % | Escrituras a disco: 8
 
 ====================================================================================================
- ALGORITMO 10: Working Set   |   Responsable: Integrante 5
+ ALGORITMO 10: Working Set   |   Responsable: Elvis Suca
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -406,7 +406,7 @@
  Fallos: 20 | Aciertos: 10 | Tasa de fallos: 66.67 % | Tasa de aciertos: 33.33 % | Escrituras a disco: 7
 
 ====================================================================================================
- ALGORITMO 11: WSClock   |   Responsable: Integrante 6
+ ALGORITMO 11: WSClock   |   Responsable: Haider Carpio
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -446,7 +446,7 @@
  Fallos: 19 | Aciertos: 11 | Tasa de fallos: 63.33 % | Tasa de aciertos: 36.67 % | Escrituras a disco: 4
 
 ====================================================================================================
- ALGORITMO 12: Aleatorio (RAND)   |   Responsable: Integrante 6
+ ALGORITMO 12: Aleatorio (RAND)   |   Responsable: Jhamil Huahualuque
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -485,21 +485,21 @@
  (*) pagina cargada en ese paso   F = fallo de pagina   H = acierto
  Fallos: 20 | Aciertos: 10 | Tasa de fallos: 66.67 % | Tasa de aciertos: 33.33 % | Escrituras a disco: 8
 
-==========================================================================================
+================================================================================================
                      TABLA COMPARATIVA DE ALGORITMOS DE REEMPLAZO
-==========================================================================================
- Nro | Algoritmo          | Responsable  | Fallos | Aciertos | % Fallos | % Aciertos | Escr.
------+--------------------+--------------+--------+----------+----------+------------+------
-   1 | FIFO               | Integrante 1 |     25 |        5 |   83.33% |     16.67% |    9
-   2 | Optimo (OPT)       | Integrante 1 |     15 |       15 |   50.00% |     50.00% |    6
-   3 | LRU                | Integrante 2 |     22 |        8 |   73.33% |     26.67% |    8
-   4 | Reloj (Clock)      | Integrante 2 |     24 |        6 |   80.00% |     20.00% |    9
-   5 | NRU                | Integrante 3 |     21 |        9 |   70.00% |     30.00% |    7
-   6 | LFU                | Integrante 3 |     19 |       11 |   63.33% |     36.67% |    4
-   7 | MFU                | Integrante 4 |     25 |        5 |   83.33% |     16.67% |    9
-   8 | Reloj Mejorado     | Integrante 4 |     21 |        9 |   70.00% |     30.00% |    6
-   9 | Aging              | Integrante 5 |     22 |        8 |   73.33% |     26.67% |    8
-  10 | Working Set        | Integrante 5 |     20 |       10 |   66.67% |     33.33% |    7
-  11 | WSClock            | Integrante 6 |     19 |       11 |   63.33% |     36.67% |    4
-  12 | Aleatorio (RAND)   | Integrante 6 |     20 |       10 |   66.67% |     33.33% |    8
-==========================================================================================
+================================================================================================
+ Nro | Algoritmo          | Responsable        | Fallos | Aciertos | % Fallos | % Aciertos | Escr.
+-----+--------------------+--------------------+--------+----------+----------+------------+------
+   1 | FIFO               | Elvis Suca         |     25 |        5 |   83.33% |     16.67% |    9
+   2 | Optimo (OPT)       | Jhamil Huahualuque |     15 |       15 |   50.00% |     50.00% |    6
+   3 | LRU                | Jhamil Huahualuque |     22 |        8 |   73.33% |     26.67% |    8
+   4 | Reloj (Clock)      | Haider Carpio      |     24 |        6 |   80.00% |     20.00% |    9
+   5 | NRU                | Angel Alvarez      |     21 |        9 |   70.00% |     30.00% |    7
+   6 | LFU                | Elvis Suca         |     19 |       11 |   63.33% |     36.67% |    4
+   7 | MFU                | Angel Alvarez      |     25 |        5 |   83.33% |     16.67% |    9
+   8 | Reloj Mejorado     | Marcus Meza        |     21 |        9 |   70.00% |     30.00% |    6
+   9 | Aging              | Marcus Meza        |     22 |        8 |   73.33% |     26.67% |    8
+  10 | Working Set        | Elvis Suca         |     20 |       10 |   66.67% |     33.33% |    7
+  11 | WSClock            | Haider Carpio      |     19 |       11 |   63.33% |     36.67% |    4
+  12 | Aleatorio (RAND)   | Jhamil Huahualuque |     20 |       10 |   66.67% |     33.33% |    8
+================================================================================================

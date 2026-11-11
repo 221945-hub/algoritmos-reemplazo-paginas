@@ -1,6 +1,6 @@
 /*
  * fifo.c - Algoritmo 1: FIFO (First-In, First-Out)
- * Responsable: Integrante 1
+ * Responsable: Integrante 5 (Elvis Suca)
  *
  * Idea: se expulsa la página que lleva más tiempo en memoria.
  * Como los marcos vacíos se llenan en orden (M1, M2, M3) y cada reemplazo

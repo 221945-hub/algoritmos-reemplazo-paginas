@@ -82,18 +82,17 @@ Tipo: R  W  R  R  W  R  R  W  W  R  W  R  R  R  W  R  R  R  W  R  W  R  W  W  R 
 | 11 | **WSClock** | **τ = `WSCLOCK_TAU` = 4 tics**. Cada marco guarda R, M y el tiempo del último uso. En un acierto: R = 1, se actualiza el tiempo y `M |= W`. El puntero recorre los marcos: si R = 1, se pone R = 0, se actualiza el tiempo y avanza. Si R = 0 y edad > τ con M = 0, la página es la víctima. Si R = 0 y edad > τ con M = 1, se **programa la escritura** (M = 0, cuenta 1 escritura) y avanza. Si da una vuelta completa sin víctima, se elige el primer marco con R = 0 y M = 0. Si no existe, se elige el marco bajo el puntero. |
 | 12 | **Aleatorio** | Generador **LCG propio** `x = (1103515245·x + 12345) mod 2³¹`, semilla **42**, víctima = `x mod 3`. Se usa un generador propio para que el resultado sea reproducible en cualquier compilador. |
 
-## 1.6 Reparto del trabajo (2 algoritmos por integrante, igual que el boceto)
+## 1.6 Reparto del trabajo (definitivo: 5 integrantes)
 
-| Integrante | Código | Algoritmos | Archivos (`src/algoritmos/`) |
-|---|---|---|---|
-| 1. Angel Ismael Alvarez Catunta | 221945 | FIFO, Óptimo | `fifo.c`, `optimo.c` |
-| 2. *[Por completar]* | — | LRU, Reloj | `lru.c`, `reloj.c` |
-| 3. *[Por completar]* | — | NRU, LFU | `nru.c`, `lfu.c` |
-| 4. *[Por completar]* | — | MFU, Reloj Mejorado | `mfu.c`, `reloj_mejorado.c` |
-| 5. *[Por completar]* | — | Aging, Working Set | `aging.c`, `working_set.c` |
-| 6. *[Por completar]* | — | WSClock, Aleatorio | `wsclock.c`, `aleatorio.c` |
+| Integrante | Algoritmos | Archivos (`src/algoritmos/`) |
+|---|---|---|
+| 1. Angel Ismael Alvarez Catunta (221945) | 5 NRU, 7 MFU | `nru.c`, `mfu.c` |
+| 2. Haider Alex Carpio Hermoza | 4 Reloj, 11 WSClock | `reloj.c`, `wsclock.c` |
+| 3. Jhamil Jhonatan Huahualuque Vargas | 2 Óptimo, 3 LRU, 12 Aleatorio | `optimo.c`, `lru.c`, `aleatorio.c` |
+| 4. Marcus Geuseppe Meza Zamalloa | 8 Reloj Mejorado, 9 Aging | `reloj_mejorado.c`, `aging.c` |
+| 5. Elvis Raúl Suca Hancco | 1 FIFO, 6 LFU, 10 Working Set | `fifo.c`, `lfu.c`, `working_set.c` |
 
-En cada pareja hay un algoritmo sencillo y uno complejo, para que la carga quede equilibrada.
+> 🔄 **Actualizado en el Paso 9 (2026-11-11):** el reparto inicial era de 6 integrantes con 2 algoritmos cada uno, como en el boceto. El grupo quedó con 5 y definió este reparto. Los integrantes van en orden alfabético por apellido.
 
 ## 1.7 Valores de control para validar el código (Paso 5)
 

@@ -1,6 +1,6 @@
 /*
  * reloj_mejorado.c - Algoritmo 8: Reloj Mejorado (Enhanced Second Chance)
- * Responsable: Integrante 4
+ * Responsable: Integrante 4 (Marcus Meza)
  *
  * Idea (Silberschatz): Reloj que considera el par (R, M):
  *     (0,0) no usada, limpia  -> mejor víctima

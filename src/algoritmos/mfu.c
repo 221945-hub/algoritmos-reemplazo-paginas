@@ -1,6 +1,6 @@
 /*
  * mfu.c - Algoritmo 7: MFU (Most Frequently Used)
- * Responsable: Integrante 4
+ * Responsable: Integrante 1 (Angel Alvarez)
  *
  * Idea: se expulsa la página con MAYOR contador de usos, bajo el
  * argumento de que una página muy usada "ya cumplió su función" y la de

@@ -38,7 +38,7 @@ static void ayuda(const char *prog)
 static void listar(void)
 {
     printf(" Nro | Algoritmo          | Responsable\n");
-    printf("-----+--------------------+-------------\n");
+    printf("-----+--------------------+--------------------\n");
     for (int k = 0; k < NUM_ALGORITMOS; k++)
         printf(" %3d | %-18s | %s\n", ALGORITMOS[k].id, ALGORITMOS[k].nombre,
                ALGORITMOS[k].responsable);
@@ -92,26 +92,26 @@ static void imprimir_cadena(const Config *cfg)
 static void tabla_comparativa(const int seleccion[])
 {
     printf("\n");
-    printf("==========================================================================================\n");
+    printf("================================================================================================\n");
     printf("                     TABLA COMPARATIVA DE ALGORITMOS DE REEMPLAZO\n");
-    printf("==========================================================================================\n");
-    printf(" Nro | %-18s | %-12s | Fallos | Aciertos | %% Fallos | %% Aciertos | Escr.\n",
+    printf("================================================================================================\n");
+    printf(" Nro | %-18s | %-18s | Fallos | Aciertos | %% Fallos | %% Aciertos | Escr.\n",
            "Algoritmo", "Responsable");
-    printf("-----+--------------------+--------------+--------+----------+----------+------------+------\n");
+    printf("-----+--------------------+--------------------+--------+----------+----------+------------+------\n");
     for (int k = 0; k < NUM_ALGORITMOS; k++) {
         const Resultado *r = &resultados[k];
         if (!seleccion[k])
             continue;
         if (!r->implementado) {
-            printf(" %3d | %-18s | %-12s | %s\n", ALGORITMOS[k].id, ALGORITMOS[k].nombre,
+            printf(" %3d | %-18s | %-18s | %s\n", ALGORITMOS[k].id, ALGORITMOS[k].nombre,
                    ALGORITMOS[k].responsable, "PENDIENTE (Paso 4)");
             continue;
         }
-        printf(" %3d | %-18s | %-12s | %6d | %8d | %7.2f%% | %9.2f%% | %4d\n",
+        printf(" %3d | %-18s | %-18s | %6d | %8d | %7.2f%% | %9.2f%% | %4d\n",
                ALGORITMOS[k].id, ALGORITMOS[k].nombre, ALGORITMOS[k].responsable,
                r->fallos, r->aciertos, tasa_fallos(r), tasa_aciertos(r), r->escrituras_disco);
     }
-    printf("==========================================================================================\n");
+    printf("================================================================================================\n");
 }
 
 /* Una fila por paso y algoritmo: sirve para armar las tablas del informe */

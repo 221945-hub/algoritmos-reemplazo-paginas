@@ -1,6 +1,6 @@
 /*
  * aging.c - Algoritmo 9: Envejecimiento (Aging)
- * Responsable: Integrante 5
+ * Responsable: Integrante 4 (Marcus Meza)
  *
  * Idea (Tanenbaum 3.4.7): aproximación de LRU en software. Cada marco tiene
  * un registro de AGING_BITS bits. Al final de cada tic de reloj:

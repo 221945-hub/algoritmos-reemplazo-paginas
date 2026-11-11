@@ -5,13 +5,12 @@ Separado del generador para poder editar la redacción sin tocar el formato.
 Marcado en línea: **negrita**, *cursiva* y `código`.
 """
 
-INTEGRANTES = [
+INTEGRANTES = [   # orden alfabético por apellido
     ("Angel Ismael Alvarez Catunta", "221945"),
-    ("[Nombre y Apellidos del Integrante 2]", "[Código 2]"),
-    ("[Nombre y Apellidos del Integrante 3]", "[Código 3]"),
-    ("[Nombre y Apellidos del Integrante 4]", "[Código 4]"),
-    ("[Nombre y Apellidos del Integrante 5]", "[Código 5]"),
-    ("[Nombre y Apellidos del Integrante 6]", "[Código 6]"),
+    ("Haider Alex Carpio Hermoza", ""),
+    ("Jhamil Jhonatan Huahualuque Vargas", ""),
+    ("Marcus Geuseppe Meza Zamalloa", ""),
+    ("Elvis Raúl Suca Hancco", ""),
 ]
 
 INTRODUCCION = {
@@ -78,22 +77,21 @@ CAP1 = {
 
 # (ID, Fase, Tarea, Duración en días, Recursos, Predecesoras, Semana)
 CRONOGRAMA = [
-    ("1", "Planificación", "Definir alcance, cadena de referencias y parámetros", 2, "Integrantes 1–6", "—", "1"),
+    ("1", "Planificación", "Definir alcance, cadena de referencias y parámetros", 2, "Integrantes 1–5", "—", "1"),
     ("2", "Planificación", "Reparto de algoritmos y creación del repositorio", 1, "Integrante 1", "1", "1"),
     ("3", "Marco teórico", "Revisión bibliográfica de memoria virtual", 4, "Integrantes 2 y 3", "2", "1–2"),
     ("4", "Marco teórico", "Búsqueda y síntesis de antecedentes", 3, "Integrantes 4 y 5", "3", "2"),
     ("5", "Implementación en C", "Entorno Linux y estructura modular común", 2, "Integrante 1", "2", "1"),
-    ("6", "Implementación en C", "FIFO y Óptimo", 4, "Integrante 1", "5", "2"),
-    ("7", "Implementación en C", "LRU y Reloj", 4, "Integrante 2", "5", "2"),
-    ("8", "Implementación en C", "NRU y LFU", 4, "Integrante 3", "5", "2"),
-    ("9", "Implementación en C", "MFU y Reloj Mejorado", 4, "Integrante 4", "5", "2"),
-    ("10", "Implementación en C", "Aging y Working Set", 4, "Integrante 5", "5", "2"),
-    ("11", "Implementación en C", "WSClock y Aleatorio", 4, "Integrante 6", "5", "2"),
-    ("12", "Simulación y pruebas", "Validación formal del simulador", 3, "Integrantes 1 y 5", "6–11", "3"),
-    ("13", "Simulación y pruebas", "Generación de trazas, CSV y gráficas", 2, "Integrante 6", "12", "3"),
-    ("14", "Redacción y validación", "Redacción de Introducción y Capítulo I", 3, "Integrantes 2 y 3", "4", "3"),
-    ("15", "Redacción y validación", "Redacción del Capítulo II (cada integrante, sus 2 algoritmos)", 5, "Integrantes 1–6", "13", "4"),
-    ("16", "Redacción y validación", "Revisión integral, bibliografía APA 7 y entrega", 2, "Integrantes 1–6", "14, 15", "4"),
+    ("6", "Implementación en C", "NRU y MFU", 4, "Integrante 1", "5", "2"),
+    ("7", "Implementación en C", "Reloj y WSClock", 4, "Integrante 2", "5", "2"),
+    ("8", "Implementación en C", "Óptimo, LRU y Aleatorio", 4, "Integrante 3", "5", "2"),
+    ("9", "Implementación en C", "Reloj Mejorado y Aging", 4, "Integrante 4", "5", "2"),
+    ("10", "Implementación en C", "FIFO, LFU y Working Set", 4, "Integrante 5", "5", "2"),
+    ("11", "Simulación y pruebas", "Validación formal del simulador", 3, "Integrantes 1 y 3", "6–10", "3"),
+    ("12", "Simulación y pruebas", "Generación de trazas, CSV y gráficas", 2, "Integrante 5", "11", "3"),
+    ("13", "Redacción y validación", "Redacción de Introducción y Capítulo I", 3, "Integrantes 2 y 4", "4", "3"),
+    ("14", "Redacción y validación", "Redacción del Capítulo II (cada integrante, sus algoritmos)", 5, "Integrantes 1–5", "12", "4"),
+    ("15", "Redacción y validación", "Revisión integral, bibliografía APA 7 y entrega", 2, "Integrantes 1–5", "13, 14", "4"),
 ]
 
 ANT_INTERNACIONALES = [
@@ -126,17 +124,17 @@ CONDICIONES = (
 
 # (id, archivo, nombre, integrante, principio, ventaja, desventaja, belady, observación, citas)
 ALGORITMOS = [
-    (1, "fifo", "FIFO (First-In, First-Out)", 1,
+    (1, "fifo", "FIFO (First-In, First-Out)", 5,
      "Expulsa la página que lleva **más tiempo en memoria**, como una cola; un acierto no cambia el orden. Se "
      "implementa con un puntero circular al marco más antiguo.",
      "muy simple y de costo O(1).", "ignora el uso de las páginas.", "**sí** (9 → 10 fallos con la cadena de Belády).",
      "Expulsa en el paso 6 la página 0, que se necesita en el paso 7.", "Silberschatz et al. (2018)"),
-    (2, "optimo", "Óptimo (OPT / MIN)", 1,
+    (2, "optimo", "Óptimo (OPT / MIN)", 3,
      "Expulsa la página cuyo **próximo uso está más lejos** en el futuro. Da el mínimo de fallos posible, pero "
      "no es realizable porque requiere conocer la cadena completa; se usa como cota de comparación.",
      "mínimo de fallos.", "no realizable en un sistema real.", "**no** (algoritmo de pila).",
      "En el paso 18 expulsa la página 2, que no vuelve a usarse hasta el paso 23.", "Belady (1966)"),
-    (3, "lru", "LRU (Least Recently Used)", 2,
+    (3, "lru", "LRU (Least Recently Used)", 3,
      "Expulsa la página que lleva **más tiempo sin usarse**, aprovechando la localidad temporal. Cada marco "
      "guarda el paso de su último uso y sale el menor.",
      "buena aproximación del Óptimo.", "su versión exacta es costosa en hardware.", "**no** (algoritmo de pila).",
@@ -146,18 +144,18 @@ ALGORITMOS = [
      "avanza (segunda oportunidad); si R = 0, se expulsa.",
      "aproxima LRU con un solo bit.", "si todos tienen R = 1 se comporta como FIFO.", "**sí** (9 → 10).",
      "En el paso 18 los tres bits R valen 1 y el puntero da una vuelta completa.", "Corbató (1969)"),
-    (5, "nru", "NRU (Not Recently Used)", 3,
+    (5, "nru", "NRU (Not Recently Used)", 1,
      "Clasifica las páginas por sus bits (R, M) en 4 clases y expulsa una de la **clase más baja** "
      "(no usada y limpia primero). Cada 5 tics una interrupción de reloj pone R = 0. Empate: la más antigua.",
      "simple y evita escrituras.", "decisión gruesa (solo 4 clases).", "posible (no es de pila); no se observó.",
      "En el paso 21 el reloj acaba de limpiar R y sale la página 1, de clase 0.", "Tanenbaum y Bos (2015)"),
-    (6, "lfu", "LFU (Least Frequently Used)", 3,
+    (6, "lfu", "LFU (Least Frequently Used)", 5,
      "Expulsa la página con **menor contador de usos** (el contador vuelve a 1 al cargar). Empate: la más "
      "antigua.",
      "protege las páginas muy usadas.", "una página antigua muy usada puede quedarse sin necesitarse.",
      "posible (se halló un caso: 9 → 11).",
      "La página 0, la más usada y escrita, no es expulsada desde el paso 15.", "Silberschatz et al. (2018)"),
-    (7, "mfu", "MFU (Most Frequently Used)", 4,
+    (7, "mfu", "MFU (Most Frequently Used)", 1,
      "Expulsa la página con **mayor contador de usos**, suponiendo que la de contador bajo acaba de llegar y "
      "aún se usará. Empate: la más antigua.",
      "simple.", "expulsa las páginas más útiles.", "**sí** (9 → 10).",
@@ -168,7 +166,7 @@ ALGORITMOS = [
      "repite. Prefiere páginas **no usadas y limpias**.",
      "reduce escrituras a disco.", "hasta 4 vueltas del puntero.", "**sí** (9 → 10).",
      "Iguala a NRU en fallos (21) pero hace una escritura menos.", "Silberschatz et al. (2018)"),
-    (9, "aging", "Envejecimiento (Aging)", 5,
+    (9, "aging", "Envejecimiento (Aging)", 4,
      "Cada marco tiene un **registro de 8 bits**; en cada tic se desplaza a la derecha y entra R por la "
      "izquierda. Sale la página con el registro menor.",
      "aproxima LRU con pocos bits.", "solo recuerda los últimos 8 tics.", "posible (no es de pila); no se observó.",
@@ -179,12 +177,12 @@ ALGORITMOS = [
      "relaciona el reemplazo con la localidad.", "más costoso; depende de τ.",
      "posible con marcos fijos (se halló un caso).",
      "En el paso 23 la página 7 tenía edad 5 > τ y salió.", "Denning (1968)"),
-    (11, "wsclock", "WSClock (Working Set Clock)", 6,
+    (11, "wsclock", "WSClock (Working Set Clock)", 2,
      "Reloj combinado con el conjunto de trabajo: expulsa una página **vieja y limpia**; si está vieja y "
      "sucia, **programa su escritura** y sigue buscando.",
      "eficiente y con pocas escrituras.", "más complejo que el Reloj.", "**sí** (9 → 10).",
      "Junto con LFU, es el mejor algoritmo realizable (19 fallos, 4 escrituras).", "Carr y Hennessy (1981)"),
-    (12, "aleatorio", "Reemplazo Aleatorio (Random)", 6,
+    (12, "aleatorio", "Reemplazo Aleatorio (Random)", 3,
      "Elige la víctima al azar con un generador congruencial lineal propio, "
      "x = (1103515245·x + 12345) mod 2³¹, semilla 42, para que el resultado sea reproducible.",
      "costo mínimo.", "resultado variable según la semilla.", "**sí** (posible en cualquier caso).",

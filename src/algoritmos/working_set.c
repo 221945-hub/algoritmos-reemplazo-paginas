@@ -1,6 +1,6 @@
 /*
  * working_set.c - Algoritmo 10: Working Set (Conjunto de Trabajo)
- * Responsable: Integrante 5
+ * Responsable: Integrante 5 (Elvis Suca)
  *
  * Idea (Denning 1968; versión de reemplazo de Tanenbaum 3.4.8):
  * el conjunto de trabajo son las páginas usadas en los últimos WS_TAU tics.

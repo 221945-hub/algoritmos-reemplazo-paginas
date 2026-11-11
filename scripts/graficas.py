@@ -262,7 +262,7 @@ def g5_gantt():
     ax.legend(handles=leyenda, loc="lower center", bbox_to_anchor=(0.4, 1.0), ncol=5,
               frameon=False, fontsize=8.5, handlelength=1.0)
     titulo(fig, "Cronograma del proyecto (diagrama de Gantt)",
-           f"16 tareas en 5 fases · duración total: {total} días hábiles · "
+           f"{len(filas)} tareas en {len(fases)} fases · duración total: {total} días hábiles · "
            "el inicio de cada tarea depende de sus predecesoras")
     guardar(fig, "g5_cronograma_gantt")
 

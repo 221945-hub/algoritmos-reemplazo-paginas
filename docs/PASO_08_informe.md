@@ -34,7 +34,7 @@ powershell -ExecutionPolicy Bypass -File scripts\actualizar_indice.ps1  # rellen
 
 | Sección | Contenido | Págs. |
 |---|---|---|
-| **Carátula** | Universidad, facultad, escuela, título, curso, docente, 6 integrantes (5 por completar), Cusco y semestre | — |
+| **Carátula** | Universidad, facultad, escuela, título, curso, docente, 5 integrantes (reparto definitivo del Paso 9), Cusco y semestre | — |
 | **Introducción** | Evolución del tema, problema y propuesta (un párrafo cada uno) | 1 |
 | **Índice** | Automático, 3 niveles, en una página | 2 |
 | **Capítulo I** | 1.1 Planteamiento (1.1.1 descripción y 1.1.2 identificación), 1.2 Justificación, 1.3 Limitaciones, 1.4 Delimitaciones, 1.5 Metodología y 1.5.1 Cronograma (tabla tipo MS Project) | 3–4 |
@@ -65,14 +65,14 @@ powershell -ExecutionPolicy Bypass -File scripts\actualizar_indice.ps1  # rellen
 | python-docx no abría `caratula.docx` (márgenes con decimales de Google Docs) | Se corrigen al copiar la plantilla |
 | Error de esquema: falta `w:gutter` en los márgenes | Se agrega `w:gutter="0"` |
 | El título quedaba debajo de los logos | Se conservan las líneas vacías donde están anclados los logos |
-| Carátula en 2 páginas con 6 integrantes | Lista con interlineado sencillo y dos líneas vacías menos |
+| Carátula en 2 páginas con todos los integrantes | Lista con interlineado sencillo y dos líneas vacías menos |
 | Filas de tabla muy altas | Márgenes de celda explícitos (la plantilla traía 100 twips) |
 | Índice en Arial y en 2 páginas | Estilos `TOC1–3` con su id interno y sin la marca de "personalizado", para que Word los use |
 | Referencias con `*` visibles en los antecedentes | Se quitó el anidamiento de negrita y cursiva |
 
 ## 8.6 Pendientes para los integrantes
 
-1. **Nombres y códigos** de los integrantes 2 a 6 (`INTEGRANTES` en `contenido_informe.py`, o directamente en el Word).
+1. ~~Nombres de los integrantes~~ ✅ completados en el Paso 9 (faltan los códigos de los integrantes 2 a 5).
 2. **Antecedente nacional 2** (resaltado en amarillo en 2.2), con una fuente peruana verificada.
 3. **Revisar la bibliografía:** solo Ruiz y Raffo (2003) se verificó en línea; conviene confirmar los DOI de las demás.
 4. Si se edita el Word a mano: clic derecho en el índice → **Actualizar campo**.

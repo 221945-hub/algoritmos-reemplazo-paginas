@@ -22,3 +22,9 @@ Proyecto_Algoritmos_Reemplazo_Paginas_Unificado.zip
 # Python
 __pycache__/
 *.pyc
+
+# Imagen del reparto (solo local)
+integrantes y algoritmos*.jpeg
+
+# Paquete de entrega (se genera con scripts/empaquetar_entrega.py)
+entrega/

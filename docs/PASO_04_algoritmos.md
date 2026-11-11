@@ -15,18 +15,18 @@ Salida de `./simulador -r`:
 
 | Nro | Algoritmo | Responsable | Fallos | Aciertos | % Fallos | % Aciertos | Escrituras a disco |
 |---|---|---|---|---|---|---|---|
-| 1 | FIFO | Integrante 1 | 25 | 5 | 83.33 % | 16.67 % | 9 |
-| 2 | **Óptimo (OPT)** | Integrante 1 | **15** | 15 | **50.00 %** | 50.00 % | 6 |
-| 3 | LRU | Integrante 2 | 22 | 8 | 73.33 % | 26.67 % | 8 |
-| 4 | Reloj (Clock) | Integrante 2 | 24 | 6 | 80.00 % | 20.00 % | 9 |
-| 5 | NRU | Integrante 3 | 21 | 9 | 70.00 % | 30.00 % | 7 |
-| 6 | **LFU** | Integrante 3 | **19** | 11 | 63.33 % | 36.67 % | **4** |
-| 7 | MFU | Integrante 4 | 25 | 5 | 83.33 % | 16.67 % | 9 |
-| 8 | Reloj Mejorado | Integrante 4 | 21 | 9 | 70.00 % | 30.00 % | 6 |
-| 9 | Aging | Integrante 5 | 22 | 8 | 73.33 % | 26.67 % | 8 |
-| 10 | Working Set | Integrante 5 | 20 | 10 | 66.67 % | 33.33 % | 7 |
-| 11 | **WSClock** | Integrante 6 | **19** | 11 | 63.33 % | 36.67 % | **4** |
-| 12 | Aleatorio (RAND) | Integrante 6 | 20 | 10 | 66.67 % | 33.33 % | 8 |
+| 1 | FIFO | Elvis Suca | 25 | 5 | 83.33 % | 16.67 % | 9 |
+| 2 | **Óptimo (OPT)** | Jhamil Huahualuque | **15** | 15 | **50.00 %** | 50.00 % | 6 |
+| 3 | LRU | Jhamil Huahualuque | 22 | 8 | 73.33 % | 26.67 % | 8 |
+| 4 | Reloj (Clock) | Haider Carpio | 24 | 6 | 80.00 % | 20.00 % | 9 |
+| 5 | NRU | Angel Alvarez | 21 | 9 | 70.00 % | 30.00 % | 7 |
+| 6 | **LFU** | Elvis Suca | **19** | 11 | 63.33 % | 36.67 % | **4** |
+| 7 | MFU | Angel Alvarez | 25 | 5 | 83.33 % | 16.67 % | 9 |
+| 8 | Reloj Mejorado | Marcus Meza | 21 | 9 | 70.00 % | 30.00 % | 6 |
+| 9 | Aging | Marcus Meza | 22 | 8 | 73.33 % | 26.67 % | 8 |
+| 10 | Working Set | Elvis Suca | 20 | 10 | 66.67 % | 33.33 % | 7 |
+| 11 | **WSClock** | Haider Carpio | **19** | 11 | 63.33 % | 36.67 % | **4** |
+| 12 | Aleatorio (RAND) | Jhamil Huahualuque | 20 | 10 | 66.67 % | 33.33 % | 8 |
 
 ✅ Los 4 **valores de control** del Paso 1 se cumplen: FIFO = 25, OPT = 15, LRU = 22 y Reloj = 24.
 ✅ Ningún algoritmo baja de 15 fallos, que es el mínimo que da el Óptimo.
@@ -46,10 +46,10 @@ Así se compara con el mismo criterio el **costo real de E/S**, no solo los fall
 
 Cada extracto muestra los **pasos 18 a 24** de la traza real. En ese tramo la cadena cambia de localidad (`7 0 1 3 5 2 0`) y los algoritmos se diferencian claramente. Para ver la traza completa: `./simulador -a N`.
 
-### 1. FIFO (`fifo.c`): Integrante 1
+### 1. FIFO (`fifo.c`): Elvis Suca
 Usa un puntero circular al marco más antiguo; un acierto no altera la cola. **Auxiliar:** `cola`, de la página más antigua a la más nueva. Detalle completo en el Paso 3.
 
-### 2. Óptimo (`optimo.c`): Integrante 1
+### 2. Óptimo (`optimo.c`): Jhamil Huahualuque
 - En cada fallo calcula, para cada marco, el **paso del próximo uso** de su página y expulsa la más lejana. `--` significa que la página no vuelve a usarse.
 - Empate entre varias que no vuelven a usarse: gana el menor índice de marco.
 - En un reemplazo, `prox` muestra los valores **con los que se decidió**, es decir, antes de cargar la página nueva.
@@ -61,7 +61,7 @@ Usa un puntero circular al marco más antiguo; un acierto no altera la cola. **A
 ```
 En el paso 18, la página 2 se vuelve a pedir en el paso 23, la 0 en el 19 y la 1 en el 20. Sale la 2, la más lejana.
 
-### 3. LRU (`lru.c`): Integrante 2
+### 3. LRU (`lru.c`): Jhamil Huahualuque
 Cada marco guarda el paso de su último uso (`ult`) y sale el menor. Es un **algoritmo de pila**.
 ```
    18 |   7 |  R |   1    0    7*|  F  |    2 | ult=[17,16,18]
@@ -69,7 +69,7 @@ Cada marco guarda el paso de su último uso (`ult`) y sale el menor. Es un **alg
    22 |   5 |  R |   1    5*   3 |  F  |    0 | ult=[20,22,21]
 ```
 
-### 4. Reloj / Segunda Oportunidad (`reloj.c`): Integrante 2
+### 4. Reloj / Segunda Oportunidad (`reloj.c`): Haider Carpio
 Bit `R` y puntero `ptr`. Si R = 1, la página recibe una segunda oportunidad (R pasa a 0 y el puntero avanza). La traza muestra **cuántas segundas oportunidades** se dieron antes de encontrar la víctima.
 ```
    18 |   7 |  R |   0    7*   2 |  F  |    1 | R=[0,1,0] ptr=M3 (2das oport.: 3)
@@ -78,7 +78,7 @@ Bit `R` y puntero `ptr`. Si R = 1, la página recibe una segunda oportunidad (R 
 ```
 En el paso 18 los tres bits R eran 1. El puntero dio una vuelta completa poniéndolos en 0 y expulsó la página en M2. Cuando todos los R son 1, Reloj se comporta igual que FIFO.
 
-### 5. NRU (`nru.c`): Integrante 3
+### 5. NRU (`nru.c`): Angel Alvarez
 - Usa los bits `R` y `M`. Al inicio de los pasos 6, 11, 16, 21 y 26, la **interrupción de reloj** pone todos los R en 0; la traza lo indica con `[reloj: R<-0]`.
 - Sale una página de la clase 2·R + M más baja. Empate: la más antigua.
 ```
@@ -88,7 +88,7 @@ En el paso 18 los tres bits R eran 1. El puntero dio una vuelta completa ponién
 ```
 En el paso 21 el reloj acababa de limpiar los R. Las páginas 1 y 7 eran clase 0 (no usadas y limpias) y salió la 1, que llegó antes.
 
-### 6. LFU (`lfu.c`): Integrante 3
+### 6. LFU (`lfu.c`): Elvis Suca
 Contador `frec` que vuelve a 1 cada vez que se carga una página. Sale la de menor contador; empate: FIFO.
 ```
    18 |   7 |  R |   3    0    7*|  F  |    1 | frec=[2,5,1]
@@ -97,7 +97,7 @@ Contador `frec` que vuelve a 1 cada vez que se carga una página. Sale la de men
 ```
 La página 0, la más usada de la cadena (8 veces), acumula frecuencia alta y **nunca sale** en la segunda mitad. Por eso LFU es uno de los mejores aquí: **19 fallos y solo 4 escrituras**, porque la 0 es justamente la página sucia más escrita.
 
-### 7. MFU (`mfu.c`): Integrante 4
+### 7. MFU (`mfu.c`): Angel Alvarez
 Usa el mismo contador, pero sale la de **mayor** frecuencia.
 ```
    18 |   7 |  R |   7*   1    2 |  F  |    0 | frec=[1,2,1]
@@ -106,7 +106,7 @@ Usa el mismo contador, pero sale la de **mayor** frecuencia.
 ```
 Expulsa justamente las páginas más usadas (la 0 en el paso 18) y luego casi todas quedan con frecuencia 1. Al quedar empatadas, el desempate FIFO decide, y **MFU termina igual que FIFO (25 fallos)**. Demuestra por qué MFU rara vez se usa.
 
-### 8. Reloj Mejorado (`reloj_mejorado.c`): Integrante 4
+### 8. Reloj Mejorado (`reloj_mejorado.c`): Marcus Meza
 - Usa `R`, `M` y `ptr`.
 - **Pasada 1:** busca (0,0) sin tocar los bits. **Pasada 2:** busca (0,1) limpiando R. Si no encuentra víctima, se repite como pasadas 3 y 4.
 - La traza indica en qué pasada se encontró la víctima.
@@ -116,7 +116,7 @@ Expulsa justamente las páginas más usadas (la 0 en el paso 18) y luego casi to
 ```
 En el paso 18 todas tenían R = 1. Las pasadas 1 y 2 fallaron (la 2 limpió los R) y en la **pasada 3** encontró (0,0): la página 1, que estaba limpia. Así **evita expulsar las páginas sucias 0 y 2**. Tiene los mismos fallos que NRU (21), pero menos escrituras (6).
 
-### 9. Aging (`aging.c`): Integrante 5
+### 9. Aging (`aging.c`): Marcus Meza
 - Registro de 8 bits por marco. Al final de cada tic se calcula `reg = (reg >> 1) | (R << 7)`. Sale el registro de menor valor.
 - La traza muestra los registros **después** del tic.
 ```
@@ -126,7 +126,7 @@ En el paso 18 todas tenían R = 1. Las pasadas 1 y 2 fallaron (la 2 limpió los 
 ```
 En el paso 21, antes de decidir, los registros eran `[10010010, 01001000, 00100000]` (los del paso 20). El menor era el de la página 7 (`00100000`: usada por última vez hace 3 tics) y salió. Aging coincide con **LRU en los 30 pasos**, no solo en los 22 fallos: con esta cadena, la aproximación de 8 bits es exacta.
 
-### 10. Working Set (`working_set.c`): Integrante 5
+### 10. Working Set (`working_set.c`): Elvis Suca
 - Usa bits `R` (limpiados cada 5 tics) y `TUU`, el tiempo del último uso, que **solo se actualiza al cargar o en el barrido**.
 - Con τ = 4, sale la primera página **fuera del conjunto de trabajo** (edad > 4). La traza explica el motivo de cada elección.
 ```
@@ -137,7 +137,7 @@ En el paso 21, antes de decidir, los registros eran `[10010010, 01001000, 001000
 ```
 En el paso 23 la página 7 tenía TUU = 18, es decir, edad 5 > τ: estaba fuera del conjunto de trabajo y salió. **Da resultados distintos a LRU (20 frente a 22)**, a diferencia del boceto, donde Working Set era en realidad LRU.
 
-### 11. WSClock (`wsclock.c`): Integrante 6
+### 11. WSClock (`wsclock.c`): Haider Carpio
 - Usa `R`, `M`, `TUU` y `ptr`. Recorre como máximo una vuelta: las páginas viejas (edad > 4) y limpias son la víctima; las viejas y sucias **programan su escritura** (`escr.prog`).
 - Si la vuelta termina sin víctima, elige la primera página con R = 0 y M = 0; si no hay ninguna, la que está bajo el puntero.
 ```
@@ -147,7 +147,7 @@ En el paso 23 la página 7 tenía TUU = 18, es decir, edad 5 > τ: estaba fuera 
 ```
 Junto con LFU, es el **mejor algoritmo realizable** con esta cadena: **19 fallos y 4 escrituras**. Mantiene en memoria la página 2 (sucia y muy usada), lo que da un acierto en el paso 23.
 
-### 12. Aleatorio (`aleatorio.c`): Integrante 6
+### 12. Aleatorio (`aleatorio.c`): Jhamil Huahualuque
 LCG propio con semilla 42. La víctima es `x mod 3`. La traza muestra el número generado y el marco elegido.
 ```
    18 |   7 |  R |   1    0    7*|  F  |    2 | x=1314989459 -> x mod 3 = 2 (M3)

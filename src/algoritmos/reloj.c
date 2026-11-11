@@ -1,6 +1,6 @@
 /*
  * reloj.c - Algoritmo 4: Reloj / Segunda Oportunidad (Clock)
- * Responsable: Integrante 2
+ * Responsable: Integrante 2 (Haider Carpio)
  *
  * Idea: FIFO circular con bit de referencia R. El puntero (manecilla)
  * recorre los marcos: si R = 1 se le da una "segunda oportunidad"

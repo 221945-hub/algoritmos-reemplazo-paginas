@@ -6,7 +6,7 @@
  Operacion:       R W R R W R R W W R W R R R W R R R W R W R W W R R R W W R 
 
 ====================================================================================================
- ALGORITMO 12: Aleatorio (RAND)   |   Responsable: Integrante 6
+ ALGORITMO 12: Aleatorio (RAND)   |   Responsable: Jhamil Huahualuque
  Marcos: 3   |   Referencias: 30
 ====================================================================================================
  Paso | Ref | Op |  M1   M2   M3 | Res | Sale | Variables auxiliares
@@ -45,10 +45,10 @@
  (*) pagina cargada en ese paso   F = fallo de pagina   H = acierto
  Fallos: 20 | Aciertos: 10 | Tasa de fallos: 66.67 % | Tasa de aciertos: 33.33 % | Escrituras a disco: 8
 
-==========================================================================================
+================================================================================================
                      TABLA COMPARATIVA DE ALGORITMOS DE REEMPLAZO
-==========================================================================================
- Nro | Algoritmo          | Responsable  | Fallos | Aciertos | % Fallos | % Aciertos | Escr.
------+--------------------+--------------+--------+----------+----------+------------+------
-  12 | Aleatorio (RAND)   | Integrante 6 |     20 |       10 |   66.67% |     33.33% |    8
-==========================================================================================
+================================================================================================
+ Nro | Algoritmo          | Responsable        | Fallos | Aciertos | % Fallos | % Aciertos | Escr.
+-----+--------------------+--------------------+--------+----------+----------+------------+------
+  12 | Aleatorio (RAND)   | Jhamil Huahualuque |     20 |       10 |   66.67% |     33.33% |    8
+================================================================================================

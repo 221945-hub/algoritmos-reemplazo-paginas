@@ -18,7 +18,7 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 | 6 | Generar trazas, CSV y gráficas | ✅ | [docs/PASO_06_resultados.md](docs/PASO_06_resultados.md) |
 | 7 | Simulador web interactivo (C → WebAssembly) | ✅ | [docs/PASO_07_simulador_web.md](docs/PASO_07_simulador_web.md) |
 | 8 | Informe en Word | ✅ | [docs/PASO_08_informe.md](docs/PASO_08_informe.md) |
-| 9 | Integración final y entrega | ⏳ | — |
+| 9 | Integración final y entrega | ✅ | [docs/PASO_09_integracion.md](docs/PASO_09_integracion.md) |
 
 ## Estructura del repositorio
 
@@ -26,7 +26,7 @@ Simulación en C (Linux/POSIX) de **12 algoritmos de reemplazo de páginas** con
 ├── docs/        Documentación de cada paso (+ evidencias/)
 ├── src/         Código fuente en C (+ Makefile)
 ├── tests/       Validación: referencia.py y validar.py
-├── scripts/     generar_resultados.sh, graficas.py y generar_informe.py
+├── scripts/     generar_resultados.sh, graficas.py, generar_informe.py y empaquetar_entrega.py
 ├── resultados/  Trazas (.txt) y métricas (.csv) generadas por el simulador
 ├── graficas/    Gráficas comparativas (PNG y SVG)
 ├── web/         Simulador web: motor C compilado a WebAssembly + interfaz
@@ -48,7 +48,13 @@ make web-servir       # simulador web en http://localhost:8000
 make clean
 ```
 
-Gráficas (requiere matplotlib), desde la raíz: `python scripts/graficas.py`
+Desde la raíz: `python scripts/graficas.py` (gráficas, requiere matplotlib) y `python scripts/empaquetar_entrega.py` (ZIP de entrega en `entrega/`).
+
+## Ejecutar un algoritmo
+
+```bash
+../build/simulador -a N    # N = 1..12; ver la tabla de integrantes
+```
 
 ## Informe
 
@@ -64,9 +70,10 @@ Gráficas (requiere matplotlib), desde la raíz: `python scripts/graficas.py`
 
 ## Integrantes
 
-1. Angel Ismael Alvarez Catunta (221945)
-2. *[Por completar]*
-3. *[Por completar]*
-4. *[Por completar]*
-5. *[Por completar]*
-6. *[Por completar]*
+| N.º | Integrante | Algoritmos |
+|---|---|---|
+| 1 | Angel Ismael Alvarez Catunta (221945) | 5 NRU, 7 MFU |
+| 2 | Haider Alex Carpio Hermoza | 4 Reloj, 11 WSClock |
+| 3 | Jhamil Jhonatan Huahualuque Vargas | 2 Óptimo, 3 LRU, 12 Aleatorio |
+| 4 | Marcus Geuseppe Meza Zamalloa | 8 Reloj Mejorado, 9 Aging |
+| 5 | Elvis Raúl Suca Hancco | 1 FIFO, 6 LFU, 10 Working Set |

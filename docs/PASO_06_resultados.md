@@ -54,18 +54,18 @@ Con este archivo se arman en Excel, Word o LaTeX las **tablas de 30 pasos** que 
 
 | ID | Algoritmo | Responsable | Fallos | Aciertos | % Fallos | % Aciertos | Escrituras |
 |---|---|---|---|---|---|---|---|
-| 1 | FIFO | Integrante 1 | 25 | 5 | 83.33 | 16.67 | 9 |
-| 2 | Óptimo (OPT) | Integrante 1 | 15 | 15 | 50.00 | 50.00 | 6 |
-| 3 | LRU | Integrante 2 | 22 | 8 | 73.33 | 26.67 | 8 |
-| 4 | Reloj (Clock) | Integrante 2 | 24 | 6 | 80.00 | 20.00 | 9 |
-| 5 | NRU | Integrante 3 | 21 | 9 | 70.00 | 30.00 | 7 |
-| 6 | LFU | Integrante 3 | 19 | 11 | 63.33 | 36.67 | 4 |
-| 7 | MFU | Integrante 4 | 25 | 5 | 83.33 | 16.67 | 9 |
-| 8 | Reloj Mejorado | Integrante 4 | 21 | 9 | 70.00 | 30.00 | 6 |
-| 9 | Aging | Integrante 5 | 22 | 8 | 73.33 | 26.67 | 8 |
-| 10 | Working Set | Integrante 5 | 20 | 10 | 66.67 | 33.33 | 7 |
-| 11 | WSClock | Integrante 6 | 19 | 11 | 63.33 | 36.67 | 4 |
-| 12 | Aleatorio (RAND) | Integrante 6 | 20 | 10 | 66.67 | 33.33 | 8 |
+| 1 | FIFO | Elvis Suca | 25 | 5 | 83.33 | 16.67 | 9 |
+| 2 | Óptimo (OPT) | Jhamil Huahualuque | 15 | 15 | 50.00 | 50.00 | 6 |
+| 3 | LRU | Jhamil Huahualuque | 22 | 8 | 73.33 | 26.67 | 8 |
+| 4 | Reloj (Clock) | Haider Carpio | 24 | 6 | 80.00 | 20.00 | 9 |
+| 5 | NRU | Angel Alvarez | 21 | 9 | 70.00 | 30.00 | 7 |
+| 6 | LFU | Elvis Suca | 19 | 11 | 63.33 | 36.67 | 4 |
+| 7 | MFU | Angel Alvarez | 25 | 5 | 83.33 | 16.67 | 9 |
+| 8 | Reloj Mejorado | Marcus Meza | 21 | 9 | 70.00 | 30.00 | 6 |
+| 9 | Aging | Marcus Meza | 22 | 8 | 73.33 | 26.67 | 8 |
+| 10 | Working Set | Elvis Suca | 20 | 10 | 66.67 | 33.33 | 7 |
+| 11 | WSClock | Haider Carpio | 19 | 11 | 63.33 | 36.67 | 4 |
+| 12 | Aleatorio (RAND) | Jhamil Huahualuque | 20 | 10 | 66.67 | 33.33 | 8 |
 
 ## 6.4 Gráficas
 

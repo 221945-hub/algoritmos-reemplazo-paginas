@@ -1,6 +1,6 @@
 /*
  * aleatorio.c - Algoritmo 12: Aleatorio (Random Replacement, RAND)
- * Responsable: Integrante 6
+ * Responsable: Integrante 3 (Jhamil Huahualuque)
  *
  * Idea: la víctima se elige al azar entre los marcos ocupados. No usa
  * ninguna información de uso; sirve como referencia de "sin inteligencia".

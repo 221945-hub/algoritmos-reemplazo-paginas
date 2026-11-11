@@ -1,6 +1,6 @@
 /*
  * wsclock.c - Algoritmo 11: WSClock (Working Set Clock)
- * Responsable: Integrante 6
+ * Responsable: Integrante 2 (Haider Carpio)
  *
  * Idea (Carr y Hennessy 1981; Tanenbaum 3.4.9): combina Reloj y conjunto de
  * trabajo. Cada marco guarda R, M y TUU (tiempo del último uso).

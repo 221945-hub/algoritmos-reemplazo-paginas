@@ -1,6 +1,6 @@
 /*
  * lfu.c - Algoritmo 6: LFU (Least Frequently Used)
- * Responsable: Integrante 3
+ * Responsable: Integrante 5 (Elvis Suca)
  *
  * Idea: cada página en memoria lleva un contador de usos; se expulsa la
  * de MENOR contador. El contador se reinicia a 1 al cargar la página

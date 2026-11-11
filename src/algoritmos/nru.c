@@ -1,6 +1,6 @@
 /*
  * nru.c - Algoritmo 5: NRU (Not Recently Used)
- * Responsable: Integrante 3
+ * Responsable: Integrante 1 (Angel Alvarez)
  *
  * Idea (Tanenbaum 3.4.2): cada página tiene bits R (referenciada) y
  * M (modificada). Una interrupción de reloj cada PERIODO_RELOJ tics pone

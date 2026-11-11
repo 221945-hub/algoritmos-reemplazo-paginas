@@ -176,7 +176,7 @@ def completar_caratula(doc):
     ts[0].text = "DOCENTE"
     ts[-1].text = "Ing. Emilio Palomino Olivera"
 
-    # Integrantes (6), con tabulación fija para alinear los códigos
+    # Integrantes, con tabulación fija para alinear los códigos
     for t in p_alumno._p.iter(qn("w:t")):
         t.text = "INTEGRANTES:"
     plantilla = copy.deepcopy(p_miembro._p)
@@ -207,7 +207,7 @@ def completar_caratula(doc):
             sp.set(qn("w:line"), "240")
         anterior = el
 
-    # Para que la carátula quepa en 1 página con 6 integrantes se quitan solo dos líneas
+    # Para que la carátula quepa en 1 página con todos los integrantes se quitan solo dos líneas
     # vacías que no sostienen nada: la que separa FACULTAD de ESCUELA y la previa a CUSCO.
     # Las líneas vacías bajo los logos NO se eliminan: los logos están anclados a esos
     # párrafos y quitarlas los superpone al título.
@@ -504,8 +504,8 @@ def capitulo1(doc):
           [[a, b, t, str(d), r, p, s] for a, b, t, d, r, p, s in C.CRONOGRAMA],
           [400, 1550, 3500, 500, 1610, 900, 900], tam=8,
           alinear=[c, None, None, c, None, c, c])
-    nota(doc, "Integrante 1: Angel Ismael Alvarez Catunta; los integrantes 2 a 6 figuran en la carátula. "
-              "Duración total: 21 días hábiles.")
+    nota(doc, "; ".join(f"Integrante {i}: {n}" for i, (n, _) in enumerate(C.INTEGRANTES, 1))
+              + ". Duración total: 21 días hábiles.")
 
 
 def matriz_traza(doc, filas_csv):

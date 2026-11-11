@@ -1,6 +1,6 @@
 /*
  * lru.c - Algoritmo 3: LRU (Least Recently Used)
- * Responsable: Integrante 2
+ * Responsable: Integrante 3 (Jhamil Huahualuque)
  *
  * Idea: se expulsa la página que lleva MÁS TIEMPO sin usarse.
  * Implementación con "contador/marca de tiempo" (Silberschatz): cada marco

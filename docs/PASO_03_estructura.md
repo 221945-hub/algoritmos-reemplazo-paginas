@@ -68,6 +68,8 @@ src/
     └── wsclock.c  aleatorio.c    ⏳ Integrante 6
 ```
 
+> 🔄 **Reparto definitivo (Paso 9, 2026-11-11):** el grupo quedó con 5 integrantes y los responsables se actualizaron. Ver `docs/PASO_09_integracion.md` §9.1.
+
 ## 3.3 Tipos de datos (`comun.h`)
 
 ### `Config`: lo que **recibe** cada algoritmo

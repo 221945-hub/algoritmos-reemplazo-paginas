@@ -1,6 +1,6 @@
 /*
  * optimo.c - Algoritmo 2: Óptimo (OPT / MIN de Belády)
- * Responsable: Integrante 1
+ * Responsable: Integrante 3 (Jhamil Huahualuque)
  *
  * Idea: se expulsa la página cuyo PRÓXIMO uso está más lejos en el futuro
  * (o que no se volverá a usar). Requiere conocer toda la cadena por
