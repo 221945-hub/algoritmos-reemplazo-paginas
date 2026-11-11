@@ -101,6 +101,29 @@ El script crea `entrega/Proyecto_SO_Reemplazo_de_Paginas.zip` **solo con los arc
 | ✅ | Verificación final automática del PDF: sin marcadores pendientes, citas APA, 5 integrantes, responsables y resultados iguales al CSV, índice completo y toda cita en la bibliografía |
 | ✍️ | **A cargo del grupo (opcional):** códigos universitarios de los integrantes 2 a 5, un segundo antecedente nacional y la verificación de los DOI de la bibliografía |
 
+## 9.6 bis Versión extensa del informe (2.0)
+
+Además del informe breve (`informe/`, 28 páginas) se entrega la **versión extensa**: `Informe_Proyecto_SO_Reemplazo_de_Paginas2.0.docx` + `.pdf` (raíz del repositorio, **69 páginas**). Incluye tabla de ventajas y desventajas, traza completa con variables auxiliares, código y citas de cada algoritmo, 7 figuras, validación, simulador web y anexo con el código común.
+
+```bash
+python scripts/generar_informe_extenso.py                     # crea el .docx 2.0
+powershell -ExecutionPolicy Bypass -File scriptsctualizar_indice.ps1 -Docx Informe_Proyecto_SO_Reemplazo_de_Paginas2.0.docx
+```
+
+Se regeneró con el generador original del Paso 8 (`scripts/generar_informe_extenso.py` + `contenido_informe_extenso.py`), aplicando todo lo cambiado desde entonces:
+
+| Cambio | Detalle |
+|---|---|
+| Integrantes | 5 nombres en la carátula, en la nota del cronograma y como responsables de cada algoritmo; la tabla comparativa muestra el nombre |
+| Cronograma y Gantt | 15 tareas con el reparto definitivo |
+| Pendientes visibles | Se quitó la nota amarilla del antecedente nacional 2 |
+| Formato | «Relación con el proyecto:» seguida de minúscula; decimales con punto en todo el texto; «Tabla 27» y «Tabla 28» en lugar de «Tabla siguiente»; índice en el estilo de Word (Times New Roman) |
+| Bibliografía | Se quitó Stallings (2018), que no se citaba en el texto (APA 7 exige que toda referencia esté citada) |
+| Afirmaciones corregidas con los datos | WSClock **sí** expulsa la página 0 (paso 22): ahora se explica que escribe poco porque programa escrituras; con 4 marcos, **NRU y LFU** (13) quedan a un fallo del Óptimo; la página 0 de LFU nunca es expulsada desde el paso 2; la leyenda de las trazas describe la columna *Resultado* (Fallo/Acierto) |
+| Maquetación | Se eliminó una página en blanco tras el índice (los 9 archivos del Anexo A ya no van al índice) y una página con una sola referencia (la Bibliografía sigue a las Recomendaciones) |
+
+**Verificación del PDF (69 págs.):** sin marcadores pendientes, sin páginas vacías, citas APA, 5 integrantes, 12 responsables correctos, resúmenes iguales al CSV del simulador e índice completo. Además se contrastaron contra las trazas todas las afirmaciones puntuales del texto (pasos 6, 18, 21 y 23, MFU = FIFO paso a paso, curva de 1 a 8 marcos, 600 cadenas aleatorias, 91 anomalías del Aleatorio, ejemplos de Belády de LFU y Working Set).
+
 ## 9.7 Problemas encontrados y soluciones
 
 | Problema | Solución |
@@ -108,6 +131,8 @@ El script crea `entrega/Proyecto_SO_Reemplazo_de_Paginas.zip` **solo con los arc
 | Revisión final del texto del informe: citas como «(Silberschatz et al. (2018))» | Se convierten al formato APA 7 entre paréntesis: «(Silberschatz et al., 2018)», «(Tanenbaum & Bos, 2015)» |
 | Mayúscula después de «Relación con el proyecto:» | Se pasa a minúscula, como corresponde en español |
 | Nota amarilla «[COMPLETAR – Antecedente nacional 2]» visible en el informe | Se quitó del informe. Para agregar otro antecedente: `ANT_NACIONALES` y `BIBLIOGRAFIA` en `contenido_informe.py` |
+| La copia `Informe_…Paginas.docx` de la raíz (versión de 73 páginas) se subió por error en el commit de revisión | Se reemplazó por la versión 2.0 regenerada y verificada |
+| Word no guardaba a tiempo el PDF de la versión 2.0 antes de cerrarse | Se exportó otra vez el PDF desde el documento ya actualizado |
 | Los nombres no cabían en la columna «Responsable» (12 caracteres) | Columna ampliada a 18 y separadores a 96 caracteres |
 | `generar_informe.py` falló con *Permission denied* | El `.docx` estaba abierto en Word. Hay que cerrarlo antes de regenerar el informe |
 | `actualizar_indice.ps1` quedó colgado mientras el documento seguía abierto | Se cerró solo la instancia oculta de Word (`/Automation`) y se repitió con el archivo cerrado |
