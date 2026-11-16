@@ -103,7 +103,7 @@ El script crea `entrega/Proyecto_SO_Reemplazo_de_Paginas.zip` **solo con los arc
 
 ## 9.6 bis Versión extensa del informe (2.0)
 
-Además del informe breve (`informe/`, 28 páginas) se entrega la **versión extensa**: `Informe_Proyecto_SO_Reemplazo_de_Paginas2.0.docx` + `.pdf` (raíz del repositorio, **69 páginas**). Incluye tabla de ventajas y desventajas, traza completa con variables auxiliares, código y citas de cada algoritmo, 7 figuras, validación, simulador web y anexo con el código común.
+Además del informe breve (`informe/`, 28 páginas) se entrega la **versión extensa**: `Informe_Proyecto_SO_Reemplazo_de_Paginas2.0.docx` + `.pdf` (raíz del repositorio, **75 páginas**). Incluye tabla de ventajas y desventajas, traza completa con variables auxiliares, código y citas de cada algoritmo, 7 figuras, validación, simulador web y anexo con el código común.
 
 ```bash
 python scripts/generar_informe_extenso.py                     # crea el .docx 2.0
@@ -122,7 +122,11 @@ Se regeneró con el generador original del Paso 8 (`scripts/generar_informe_exte
 | Afirmaciones corregidas con los datos | WSClock **sí** expulsa la página 0 (paso 22): ahora se explica que escribe poco porque programa escrituras; con 4 marcos, **NRU y LFU** (13) quedan a un fallo del Óptimo; la página 0 de LFU nunca es expulsada desde el paso 2; la leyenda de las trazas describe la columna *Resultado* (Fallo/Acierto) |
 | Maquetación | Se eliminó una página en blanco tras el índice (los 9 archivos del Anexo A ya no van al índice) y una página con una sola referencia (la Bibliografía sigue a las Recomendaciones) |
 
-**Verificación del PDF (69 págs.):** sin marcadores pendientes, sin páginas vacías, citas APA, 5 integrantes, 12 responsables correctos, resúmenes iguales al CSV del simulador e índice completo. Además se contrastaron contra las trazas todas las afirmaciones puntuales del texto (pasos 6, 18, 21 y 23, MFU = FIFO paso a paso, curva de 1 a 8 marcos, 600 cadenas aleatorias, 91 anomalías del Aleatorio, ejemplos de Belády de LFU y Working Set).
+**Revisión del 2026-11-16 (75 págs.):**
+- Integrantes con **apellidos primero** («Alvarez Catunta, Angel Ismael») y en orden alfabético, en la carátula, la nota del cronograma, el responsable de cada algoritmo y la Tabla 27.
+- Cada algoritmo tiene una subsección nueva, **«c) Cómo elige el marco que se vacía (paso a paso)»**, con el procedimiento numerado y un ejemplo real de su traza (texto en `SELECCION` de `contenido_informe_extenso.py`). Cada ejemplo se comprobó contra `resultados/trazas_3marcos.csv`. Las subsecciones siguientes pasan a ser d) Código y e) Citas.
+
+**Verificación del PDF (69 págs., versión anterior):** sin marcadores pendientes, sin páginas vacías, citas APA, 5 integrantes, 12 responsables correctos, resúmenes iguales al CSV del simulador e índice completo. Además se contrastaron contra las trazas todas las afirmaciones puntuales del texto (pasos 6, 18, 21 y 23, MFU = FIFO paso a paso, curva de 1 a 8 marcos, 600 cadenas aleatorias, 91 anomalías del Aleatorio, ejemplos de Belády de LFU y Working Set).
 
 ## 9.7 Problemas encontrados y soluciones
 

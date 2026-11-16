@@ -6,12 +6,12 @@ Separado del generador para poder editar la redacción sin tocar el formato.
 Marcado en línea: **negrita** y *cursiva*.
 """
 
-INTEGRANTES = [   # orden alfabético por apellido
-    ("Angel Ismael Alvarez Catunta", "221945"),
-    ("Haider Alex Carpio Hermoza", ""),
-    ("Jhamil Jhonatan Huahualuque Vargas", ""),
-    ("Marcus Geuseppe Meza Zamalloa", ""),
-    ("Elvis Raúl Suca Hancco", ""),
+INTEGRANTES = [   # apellidos primero, en orden alfabético
+    ("Alvarez Catunta, Angel Ismael", "221945"),
+    ("Carpio Hermoza, Haider Alex", ""),
+    ("Huahualuque Vargas, Jhamil Jhonatan", ""),
+    ("Meza Zamalloa, Marcus Geuseppe", ""),
+    ("Suca Hancco, Elvis Raúl", ""),
 ]
 
 INTRODUCCION = {
@@ -439,3 +439,119 @@ ALGORITMOS = [
       "estable."],
      "Belady (1966)."),
 ]
+
+# Cómo elige cada algoritmo el marco que se vacía (memoria llena).
+# id -> (pasos del procedimiento, ejemplo tomado de la traza con 3 marcos)
+# Cada ejemplo se verificó contra resultados/trazas_3marcos.csv.
+SELECCION = {
+    1: (["Las páginas forman una cola por orden de llegada; un puntero circular señala el marco de la que "
+         "**llegó primero** (la cabeza de la cola).",
+         "Ante un fallo, se vacía el marco que señala el puntero, sin importar cuántas veces se haya usado su página.",
+         "La nueva página se carga en ese marco y el puntero avanza al siguiente (M1 → M2 → M3 → M1), que ahora "
+         "guarda la página más antigua."],
+        "Paso 6 (llega la página 3). Antes del fallo, M1 = 2, M2 = 0 y M3 = 1, y la cola de llegada es [0, 1, 2]: la "
+        "0 entró en el paso 2, la 1 en el 3 y la 2 en el 4. La más antigua es la 0, que está en M2, así que se vacía "
+        "**M2** y se carga la 3 (cola = [1, 2, 3]). La decisión es mala: la página 0 se vuelve a pedir en el paso 7."),
+    2: (["Ante un fallo, para cada página en memoria se busca en la cadena futura el paso de su **próxima referencia** (columna "
+         "*prox*; «--» significa que no se vuelve a usar).",
+         "Se vacía el marco cuya próxima referencia está **más lejos**. Una página que no se vuelve a usar se elige "
+         "primero; si hay varias, la del marco de menor índice.",
+         "La nueva página se carga en ese marco."],
+        "Paso 18 (llega la página 7). M1 = 2, M2 = 0 y M3 = 1. Próximos usos: la 2 en el paso 23, la 0 en el 19 y la "
+        "1 en el 20 (prox = [23, 19, 20]). La más lejana es la 2, así que se vacía **M1** y se carga la 7. Las páginas "
+        "0 y 1, que se necesitan antes, se conservan."),
+    3: (["Cada marco guarda el paso de su **último uso** (columna *ult*), que se actualiza al cargar la página y en "
+         "cada acierto.",
+         "Ante un fallo, se busca el **menor** valor de *ult*.",
+         "Ese marco, cuya página lleva más tiempo sin usarse, se vacía.",
+         "La nueva página se carga allí con *ult* igual al paso actual."],
+        "Paso 18 (llega la página 7). M1 = 1, M2 = 0 y M3 = 2, con ult = [17, 16, 15]: la 1 se usó en el paso 17, la "
+        "0 en el 16 y la 2 en el 15. El menor es 15, así que se vacía **M3** (página 2) y se carga la 7 con ult = 18."),
+    4: (["Ante un fallo, se mira el marco que señala el puntero.",
+         "Si su bit R vale 1, la página recibe una **segunda oportunidad**: R pasa a 0 y el puntero avanza al "
+         "siguiente marco (de M3 vuelve a M1).",
+         "Se repite hasta encontrar un marco con R = 0. Como cada vuelta deja los bits en 0, se encuentra como máximo "
+         "en una vuelta completa.",
+         "Ese marco se vacía, la nueva página entra con R = 1 y el puntero avanza al marco siguiente."],
+        "Paso 18 (llega la página 7). M1 = 0, M2 = 1 y M3 = 2, con R = [1, 1, 1] y el puntero en M2. M2 tiene R = 1: "
+        "pasa a 0 y el puntero avanza a M3; M3 y M1 reciben también su segunda oportunidad. De vuelta en M2, ahora "
+        "R = 0, así que se vacía **M2** (página 1) y se carga la 7 con R = 1. El puntero queda en M3 y R = [0, 1, 0]. "
+        "Como las tres páginas tenían R = 1, la vuelta completa no protegió a ninguna."),
+    5: (["Si el paso es 6, 11, 16, 21 o 26, la interrupción de reloj pone R = 0 en todos los marcos antes de "
+         "atender la referencia.",
+         "Ante un fallo, se calcula la **clase** de cada página: 2·R + M (0 = no usada y "
+         "limpia; 1 = no usada y sucia; 2 = usada y limpia; 3 = usada y sucia).",
+         "Se vacía el marco de **clase más baja**. Si hay empate, el de la página que llegó primero.",
+         "La nueva página entra con R = 1 y con M = 1 si la operación es una escritura (W)."],
+        "Paso 21 (llega la página 3, escritura). Es paso de reloj, así que R pasa a [0, 0, 0]. M1 = 1, M2 = 0 y "
+        "M3 = 7, con M = [0, 1, 0]. Clases: la 1 es clase 0, la 0 es clase 1 y la 7 es clase 0. Empatan la 1 y la 7; "
+        "la 1 llegó antes (paso 14) que la 7 (paso 18), así que se vacía **M1** y se carga la 3 con R = 1 y M = 1. "
+        "Como la página 1 estaba limpia, sale sin escritura a disco."),
+    6: (["Cada marco lleva un **contador de usos** (columna *frec*): vale 1 al cargar la página y suma 1 en cada "
+         "acierto.",
+         "Ante un fallo, se busca el **menor** contador.",
+         "Si hay empate, se elige la página que llegó primero.",
+         "Ese marco se vacía y la nueva página entra con contador 1."],
+        "Paso 18 (llega la página 7). M1 = 3, M2 = 0 y M3 = 1, con frec = [2, 5, 1]. El menor contador es el de la "
+        "página 1, así que se vacía **M3** y se carga la 7 con contador 1. La página 0, con 5 usos, queda protegida. "
+        "También se ve la debilidad de LFU: la página 1 había entrado en el paso 17 y sale enseguida, porque aún no "
+        "acumuló usos."),
+    7: (["Usa el mismo contador de usos que LFU (1 al cargar y +1 en cada acierto).",
+         "Ante un fallo, se busca el **mayor** contador.",
+         "Si hay empate, se elige la página que llegó primero.",
+         "Ese marco se vacía y la nueva página entra con contador 1."],
+        "Paso 18 (llega la página 7). M1 = 0, M2 = 1 y M3 = 2, con frec = [2, 2, 1]. El mayor contador es 2 y "
+        "empatan la 0 y la 1; la 0 llegó antes (paso 11) que la 1 (paso 14), así que se vacía **M1** y se carga la 7. "
+        "Sale la página 0, la más usada de la cadena, que se vuelve a pedir en el paso 19."),
+    8: (["**Pasada 1:** desde el puntero, se da una vuelta buscando un marco con (R, M) = (0, 0), sin cambiar "
+         "ningún bit.",
+         "**Pasada 2:** si no lo hubo, se da otra vuelta buscando (0, 1); cada marco que no cumple queda con R = 0.",
+         "Si aún no hay víctima, se repiten las pasadas: como ahora todos los R valen 0, la búsqueda termina.",
+         "El marco encontrado se vacía, la nueva página entra con R = 1 (y M según la operación) y el puntero "
+         "avanza al marco siguiente."],
+        "Paso 18 (llega la página 7). M1 = 0, M2 = 1 y M3 = 2, con R = [1, 1, 1], M = [1, 0, 1] y el puntero en M3. "
+        "Pasada 1: ningún marco es (0, 0). Pasada 2: ninguno es (0, 1), y al pasar M3, M1 y M2 quedan con R = 0. "
+        "Pasada 3 (otra vez la búsqueda de (0, 0)): M3 = (0, 1) y M1 = (0, 1) no sirven; M2 = (0, 0) sí. Se vacía "
+        "**M2** (página 1, limpia) y se carga la 7. Las páginas sucias 0 y 2 se conservan y no hay escritura a disco."),
+    9: (["Cada marco tiene un **registro de 8 bits**. Al final de cada paso el registro se desplaza una posición a "
+         "la derecha, el bit R entra por la izquierda y R vuelve a 0.",
+         "Leído como número binario, un registro mayor indica una página usada más recientemente.",
+         "Ante un fallo, se vacía el marco con el **registro menor** (empate: el de menor "
+         "índice).",
+         "La nueva página entra con registro 0 y R = 1."],
+        "Paso 18 (llega la página 7). Tras el paso 17, los registros son M1 (página 1) = 10010000, M2 (página 0) = "
+        "01000000 y M3 (página 2) = 00101000, es decir, 144, 64 y 40 en decimal. El menor es el de la página 2, así "
+        "que se vacía **M3** y se carga la 7. Al cerrar el paso, los registros quedan en 01001000, 00100000 y "
+        "10000000. Es la misma víctima que elige LRU."),
+    10: (["Cada marco guarda R y el **tiempo del último uso** (TUU). En los pasos 6, 11, 16, 21 y 26 se ponen en 0 "
+          "todos los R; un acierto solo pone R = 1.",
+          "Ante un fallo (t = paso actual), se recorren M1, M2 y M3: si R = 1, se hace "
+          "TUU = t, porque la página está en el conjunto de trabajo.",
+          "Si R = 0 y la edad t − TUU es **mayor que τ = 4**, la página está fuera del conjunto de trabajo: la primera "
+          "que cumpla esto es la víctima (el recorrido sigue solo para actualizar el TUU de las demás).",
+          "Si ninguna está fuera, se vacía la de mayor edad con R = 0, y si todas tienen R = 1, el marco M1."],
+         "Paso 23 (t = 23, llega la página 2). M1 = 3, M2 = 5 y M3 = 7, con R = [1, 1, 0] y TUU = [22, 22, 18]. M1 "
+         "y M2 tienen R = 1: su TUU pasa a 23. M3 tiene R = 0 y edad 23 − 18 = 5 > 4: está fuera del conjunto de "
+         "trabajo, así que se vacía **M3** y se carga la 2 con TUU = 23."),
+    11: (["Cada marco guarda R, M y el tiempo del último uso (TUU). Ante un fallo, el "
+          "puntero recorre los marcos (como máximo una vuelta):",
+          "Si R = 1: se pone R = 0, TUU = t y avanza. Si R = 0 y la edad es ≤ τ = 4: la página está en el conjunto "
+          "de trabajo y se respeta.",
+          "Si R = 0, la edad es > 4 y la página está **limpia**, es la víctima. Si está **sucia**, se programa su "
+          "escritura a disco (M = 0) y se sigue buscando.",
+          "Si la vuelta termina sin víctima, se vacía el primer marco con R = 0 y M = 0 desde el puntero (o, si no "
+          "hay, el marco bajo el puntero)."],
+         "Paso 27 (t = 27, llega la página 2). M1 = 3, M2 = 0 y M3 = 4, con R = [0, 0, 1], M = [1, 1, 0], "
+         "TUU = [22, 25, 26] y el puntero en M1. M1: R = 0, edad 5 > 4 y sucia, así que se programa su escritura "
+         "(M = 0). M2: edad 2, está en el conjunto de trabajo. M3: R = 1, pasa a 0. Termina la vuelta sin víctima y "
+         "el primer marco con R = 0 y M = 0 es M1, cuya página 3 ya quedó limpia: se vacía **M1** y se carga la 2."),
+    12: (["En cada reemplazo se calcula un nuevo número del generador: x = (1103515245·x + 12345) mod 2³¹, "
+          "empezando con la semilla 42.",
+          "El marco que se vacía es **x mod 3**: 0 = M1, 1 = M2 y 2 = M3.",
+          "No se consulta el uso de las páginas: la elección es solo la del generador.",
+          "La nueva página se carga en ese marco."],
+         "Paso 18 (llega la página 7). El valor anterior era x = 1 736 731 266, y el nuevo es "
+         "(1103515245 · 1 736 731 266 + 12345) mod 2³¹ = 1 314 989 459. Como 1 314 989 459 mod 3 = 2, se vacía "
+         "**M3** (página 2) y se carga la 7. La página 2 se vuelve a pedir en el paso 23, pero el algoritmo no lo "
+         "tiene en cuenta."),
+}

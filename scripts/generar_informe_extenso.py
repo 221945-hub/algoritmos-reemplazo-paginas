@@ -611,13 +611,21 @@ def capitulo2(doc, trazas, resumen):
         for t in analisis:
             par(doc, t)
 
-        doc.add_paragraph("c) Código fuente en lenguaje C para Linux", style="Etiqueta")
+        doc.add_paragraph("c) Cómo elige el marco que se vacía (paso a paso)", style="Etiqueta")
+        pasos, ejemplo = C.SELECCION[aid]
+        par(doc, "Mientras haya un marco libre, la página se carga en el de menor índice y no se vacía ninguno. "
+                 "Con los 3 marcos ocupados, el algoritmo decide así:")
+        for k, texto in enumerate(pasos, 1):
+            par(doc, f"**{k}.** {texto}")
+        par(doc, f"**Ejemplo en la traza (Tabla {contador['tabla']}).** {ejemplo}")
+
+        doc.add_paragraph("d) Código fuente en lenguaje C para Linux", style="Etiqueta")
         par(doc, f"Módulo `src/algoritmos/{archivo}.c`. Se compila junto con los módulos comunes del Anexo A "
                  "mediante `make` (gcc -std=c11 -Wall -Wextra -pedantic -O2) y se ejecuta con "
                  f"`./simulador -a {aid}`, que imprime la traza anterior y el conteo de fallos.")
         bloque_codigo(doc, leer(os.path.join(SRC, "algoritmos", f"{archivo}.c")))
 
-        doc.add_paragraph("d) Citas bibliográficas", style="Etiqueta")
+        doc.add_paragraph("e) Citas bibliográficas", style="Etiqueta")
         par(doc, f"Fundamentado en {citas}")
 
 
@@ -627,11 +635,12 @@ def evaluacion(doc, resumen):
              "(3 marcos, cadena oficial de 30 referencias).")
     rotulo_tabla(doc, "Resultados de los 12 algoritmos con 3 marcos")
     nombres = {a[0]: a[2].split(" (")[0] for a in C.ALGORITMOS}
-    filas = [[r["ID"], nombres[int(r["ID"])], r["Responsable"], r["Fallos"],
+    responsable = {a[0]: C.INTEGRANTES[a[3] - 1][0] for a in C.ALGORITMOS}
+    filas = [[r["ID"], nombres[int(r["ID"])], responsable[int(r["ID"])], r["Fallos"],
               r["Aciertos"], f"{float(r['Tasa_Fallos_Pct']):.2f} %", r["Escrituras_Disco"]] for r in resumen]
     c = WD_ALIGN_PARAGRAPH.CENTER
     tabla(doc, ["#", "Algoritmo", "Responsable", "Fallos", "Aciertos", "% Fallos", "Escrituras"],
-          filas, [450, 2400, 1700, 1100, 1100, 1310, 1300], tam=10, alinear=[c, None, None, c, c, c, c])
+          filas, [420, 2000, 2700, 900, 1000, 1140, 1200], tam=10, alinear=[c, None, None, c, c, c, c])
     nota(doc)
     g = os.path.join(RAIZ, "graficas")
     figura(doc, os.path.join(g, "g1_fallos_por_algoritmo.png"), "Fallos de página por algoritmo (3 marcos)")

@@ -60,7 +60,7 @@ Desde la raíz: `python scripts/graficas.py` (gráficas, requiere matplotlib) y 
 
 [informe/Informe_Proyecto_SO_Reemplazo_de_Paginas.docx](informe/Informe_Proyecto_SO_Reemplazo_de_Paginas.docx) (28 páginas, centrado en el código de los 12 algoritmos; también en PDF). Se regenera con `python scripts/generar_informe.py`.
 
-**Versión extensa (69 páginas):** [Informe_Proyecto_SO_Reemplazo_de_Paginas2.0.docx](Informe_Proyecto_SO_Reemplazo_de_Paginas2.0.docx) (+ PDF), con traza detallada, figuras, validación y anexo de código. Se regenera con `python scripts/generar_informe_extenso.py`.
+**Versión extensa (75 páginas):** [Informe_Proyecto_SO_Reemplazo_de_Paginas2.0.docx](Informe_Proyecto_SO_Reemplazo_de_Paginas2.0.docx) (+ PDF), con traza detallada, cómo elige cada algoritmo el marco que se vacía, figuras, validación y anexo de código. Se regenera con `python scripts/generar_informe_extenso.py`.
 
 ## Simulador web
 
